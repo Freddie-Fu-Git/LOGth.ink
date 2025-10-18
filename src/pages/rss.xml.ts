@@ -1,11 +1,11 @@
 import rss from "@astrojs/rss";
 import { getSortedPosts } from "@utils/content-utils";
+import { generateSlugFrom } from "@utils/slug-utils";
 import { getPostUrlBySlug } from "@utils/url-utils";
 import type { APIContext } from "astro";
 import MarkdownIt from "markdown-it";
 import sanitizeHtml from "sanitize-html";
 import { siteConfig } from "@/config";
-import { generateSlugFrom } from "@utils/slug-utils";
 
 const parser = new MarkdownIt();
 

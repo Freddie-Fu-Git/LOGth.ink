@@ -1,10 +1,10 @@
 ---
 import { getEntry, render } from "astro:content";
+import fs from "node:fs";
+import { fileURLToPath } from "node:url";
 import I18nKey from "../i18n/i18nKey";
 import { i18n } from "../i18n/translation";
 import MainGridLayout from "../layouts/MainGridLayout.astro";
-import fs from "node:fs";
-import { fileURLToPath } from "node:url";
 
 // const aboutPost = await getEntry("spec", "album");
 
@@ -13,14 +13,14 @@ import { fileURLToPath } from "node:url";
 // }
 
 const images = [
-  {
-    src: "https://img-1300288738.cos.ap-beijing.myqcloud.com/PicGo_Home/202510162342694.webp",
-    alt: "Test1",
-  },
-  {
-    src: "https://img-1300288738.cos.ap-beijing.myqcloud.com/PicGo_Home/202510181749875.webp",
-    alt: "Test2",
-  },
+	{
+		src: "https://img-1300288738.cos.ap-beijing.myqcloud.com/PicGo_Home/202510162342694.webp",
+		alt: "Test1",
+	},
+	{
+		src: "https://img-1300288738.cos.ap-beijing.myqcloud.com/PicGo_Home/202510181749875.webp",
+		alt: "Test2",
+	},
 ];
 
 const photoCount = images.length;
@@ -29,9 +29,9 @@ const filePath = fileURLToPath(import.meta.url);
 const stats = await fs.promises.stat(filePath);
 const lastModified = stats.mtime;
 const lastModifiedLabel = new Intl.DateTimeFormat("zh-CN", {
-  year: "numeric",
-  month: "numeric",
-  day: "numeric",
+	year: "numeric",
+	month: "numeric",
+	day: "numeric",
 }).format(lastModified);
 ---
 
