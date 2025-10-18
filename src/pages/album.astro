@@ -1,0 +1,125 @@
+---
+import { getEntry, render } from "astro:content";
+import I18nKey from "../i18n/i18nKey";
+import { i18n } from "../i18n/translation";
+import MainGridLayout from "../layouts/MainGridLayout.astro";
+import fs from "node:fs";
+import { fileURLToPath } from "node:url";
+
+// const aboutPost = await getEntry("spec", "album");
+
+// if (!aboutPost) {
+//   throw new Error("About page content not found");
+// }
+
+const images = [
+  {
+    src: "https://img-1300288738.cos.ap-beijing.myqcloud.com/PicGo_Home/202510162342694.webp",
+    alt: "Test1",
+  },
+  {
+    src: "https://img-1300288738.cos.ap-beijing.myqcloud.com/PicGo_Home/202510181749875.webp",
+    alt: "Test2",
+  },
+];
+
+const photoCount = images.length;
+
+const filePath = fileURLToPath(import.meta.url);
+const stats = await fs.promises.stat(filePath);
+const lastModified = stats.mtime;
+const lastModifiedLabel = new Intl.DateTimeFormat("zh-CN", {
+  year: "numeric",
+  month: "numeric",
+  day: "numeric",
+}).format(lastModified);
+---
+
+<!-- 引入 Fancybox 样式和脚本 -->
+<head>
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css"
+  />
+  <script
+    src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"
+    defer></script>
+</head>
+
+<MainGridLayout title="相册" description="相册">
+  <div
+    class="flex w-full rounded-[var(--radius-large)] overflow-hidden relative min-h-32"
+  >
+    <div class="card-base z-10 px-9 py-6 relative w-full">
+      <!-- 相册标题信息 -->
+      <header class="mb-8">
+        <h1
+          class="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-3"
+        >
+          用文字与镜头定格生活碎片
+        </h1>
+        <p class="text-neutral-600 dark:text-neutral-400 mb-4">
+          Capture a Moment, Freeze a Memory
+        </p>
+        <!-- 相册元数据 -->
+        <div
+          class="flex flex-wrap items-center gap-4 text-sm text-neutral-500 dark:text-neutral-500"
+        >
+          <span>{photoCount} photos</span>
+          <time datetime={lastModified.toISOString()}>{lastModifiedLabel}</time>
+          <span class="flex items-center gap-1">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+              <path
+                fill-rule="evenodd"
+                d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                clip-rule="evenodd"
+              >
+              </path>
+            </svg> 中国，北京
+          </span>
+        </div>
+        <!-- 标签 -->
+        <div class="flex flex-wrap gap-2 mt-4">
+          <span class="btn-regular h-8 text-sm px-3 rounded-lg">生活</span>
+          <span class="btn-regular h-8 text-sm px-3 rounded-lg">旅行</span>
+          <span class="btn-regular h-8 text-sm px-3 rounded-lg">摄影</span>
+        </div>
+      </header>
+
+      <!-- 照片瀑布流布局 -->
+      <div
+        class="w-full columns-1 sm:columns-2 lg:columns-3 gap-4 [column-fill:_balance]"
+      >
+        {images.map((image) => (
+            <a
+              href="javascript:void(0)"
+              data-fancybox="gallery"
+              data-caption={image.alt}
+              class="block mb-4 break-inside-avoid"
+              data-src={`${image.src}`}
+            >
+              <img
+                src={`${image.src}`}
+                alt={image.alt}
+                title={image.alt}
+                class="w-full rounded-lg hover:scale-[1.02] transition-transform duration-300 cursor-pointer"
+                loading="lazy"
+              />
+            </a>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <!-- 初始化 Fancybox -->
+  <script is:inline>
+    document.addEventListener("DOMContentLoaded", () => {
+      Fancybox.bind("[data-fancybox='gallery']", {
+        Toolbar: true,
+        animated: true,
+        showClass: "fancybox-fadeIn",
+        hideClass: "fancybox-fadeOut",
+      });
+    });
+  </script>
+</MainGridLayout>
