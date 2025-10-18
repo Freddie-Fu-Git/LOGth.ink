@@ -14,6 +14,8 @@ import { Icon } from "astro-icon/components";
 import { licenseConfig } from "src/config";
 import { profileConfig, siteConfig } from "@/config";
 import { formatDateToYYYYMMDD } from "@/utils/date-utils";
+// 添加评论组件导入
+import Comment from "@components/comment/index.astro";
 
 export async function getStaticPaths() {
 	const blogEntries = await getSortedPosts();
@@ -89,6 +91,9 @@ const { Content, headings, remarkPluginFrontmatter } = await entry.render();
             {licenseConfig.enable && <License title={entry.data.title} slug={generateEntrySlug(entry)} pubDate={entry.data.published} class="mb-6 rounded-xl license-container onload-animation"></License>}
         </div>
     </div>
+
+    {/* 添加评论区域 */}
+    <Comment post={entry}></Comment>
 
     <div class="flex flex-col md:flex-row justify-between mb-4 gap-4 overflow-hidden w-full">
         <a href={entry.data.nextSlug ? getPostUrlBySlug(entry.data.nextSlug) : "#"} class:list={["w-full font-bold overflow-hidden active:scale-95", {"pointer-events-none": !entry.data.nextSlug}]}> 

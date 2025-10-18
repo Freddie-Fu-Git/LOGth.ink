@@ -88,3 +88,10 @@ export const expressiveCodeConfig: ExpressiveCodeConfig = {
 	// Please select a dark theme, as this blog theme currently only supports dark background color
 	theme: "github-dark",
 };
+
+export const commentConfig = {
+	artalk: {
+		server: "https://artalk.logth.ink", // 你的反代
+		site: "LOGth.ink", // 后端里配置的站点名
+	},
+};

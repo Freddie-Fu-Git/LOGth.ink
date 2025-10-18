@@ -1,0 +1,26 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { commentConfig } from "@/config";
+import Artalk from "./Artalk.astro";
+
+interface Props {
+	post: CollectionEntry<"posts">;
+}
+
+const { id, data, slug } = Astro.props.post;
+
+const path = `/posts/${slug}`;
+const url = `${Astro.site?.href}${path}`;
+
+let commentService = "";
+if (commentConfig?.artalk) {
+	commentService = "artalk";
+}
+
+const showComment = commentService === "artalk" && ((data as any).comments ?? true);
+---
+{showComment && (
+  <div class="card-base p-6 mb-4">
+    <Artalk path={path} />
+  </div>
+)}

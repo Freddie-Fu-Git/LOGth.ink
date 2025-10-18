@@ -1,0 +1,79 @@
+---
+import { commentConfig } from "@/config";
+
+interface Props {
+	path: string;
+}
+
+const config = {
+	// 你可以在 config.ts 里预设，也可以直接写死
+	...commentConfig.artalk,
+	el: "#artalk",
+	server: "https://artalk.logth.ink", // 你的反代地址
+	site: commentConfig?.artalk?.site || "LOGth.ink", // 与后端 Artalk 管理端里设置的站点名一致
+	pageKey: Astro.props.path,
+	locale: "zh-CN",
+	pageTitle: "",
+	// darkMode: "auto", // 可选
+};
+---
+
+<!-- 挂载点 -->
+<div id="artalk"></div>
+
+<script define:vars={{ config }}>
+//加载css
+  function ensureArtalkCSS() {
+    if (!document.getElementById('artalk-css')) {
+      const link = document.createElement('link');
+      link.id = 'artalk-css';
+      link.rel = 'stylesheet';
+      link.href = 'https://cdn.jsdelivr.net/npm/artalk/dist/Artalk.css';
+      document.head.appendChild(link);
+    }
+  }
+//根据主题切换暗黑明亮模式
+  function bindThemeSync(at) {
+    const apply = () => {
+      const isDark = document.documentElement.classList.contains('dark');
+      at.setDarkMode(isDark);
+    };
+
+    apply();
+
+    const mo = new MutationObserver(apply);
+    mo.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+
+    window.matchMedia('(prefers-color-scheme: dark)')
+      .addEventListener('change', apply);
+  }
+//
+  // 加载 JS
+  function loadArtalk () {
+    // 如果已经加载过，直接 init
+    if (!document.querySelector(config.el)) return
+
+    ensureArtalkCSS();
+
+    if (!window.Artalk) {
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/artalk/dist/Artalk.js'
+      script.defer = true
+      script.onload = () => {
+        const at = window.Artalk.init({ ...config, pageTitle: document.title, pageKey: location.pathname });
+        bindThemeSync(at)
+      };
+      document.body.appendChild(script);
+    } else{
+          const at = window.Artalk.init({ ...config, pageTitle: document.title, pageKey: location.pathname });
+          bindThemeSync(at);
+        }
+    }
+
+
+  // 只监听一次自定义事件，避免多次加载
+  document.addEventListener('loadComment', loadArtalk, { once: true })
+</script>
