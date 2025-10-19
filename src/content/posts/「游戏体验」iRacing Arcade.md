@@ -17,12 +17,9 @@ lang: 'zh_CN'
 
 Demo 阶段，玩家驾驶的应该是**保时捷 911 GT3 RS**，Q版的外观让我回想起小时候买的迷你遥控赛车。
 
-<table>
-	<tr>
-		<td><img src="https://img-1300288738.cos.ap-beijing.myqcloud.com/PicGo_Home/202510191137308.jpg" width="" height= 280 ></td>
-		<td><img src="https://img-1300288738.cos.ap-beijing.myqcloud.com/PicGo_Home/202510191216559.jpg" width="" height= 280 ></td>
-	</tr>
-</table>
+![保时捷 911 GT3 RS](https://img-1300288738.cos.ap-beijing.myqcloud.com/PicGo_Home/202510191137308.jpg)
+
+![玩具遥控车](https://img-1300288738.cos.ap-beijing.myqcloud.com/PicGo_Home/202510191216559.jpg)
 
 ## 游戏部分
 
