@@ -19,8 +19,8 @@ Demo 阶段，玩家驾驶的应该是**保时捷 911 GT3 RS**，Q版的外观�
 
 <table>
 	<tr>
-		<td><img src="https://img-1300288738.cos.ap-beijing.myqcloud.com/PicGo_Home/202510191137308.jpg" width=260 height=""></td>
-		<td><img src="https://img-1300288738.cos.ap-beijing.myqcloud.com/PicGo_Home/202510191216559.jpg" width=260 height=""></td>
+		<td><img src="https://img-1300288738.cos.ap-beijing.myqcloud.com/PicGo_Home/202510191137308.jpg" width="" height= 280 ></td>
+		<td><img src="https://img-1300288738.cos.ap-beijing.myqcloud.com/PicGo_Home/202510191216559.jpg" width="" height= 280 ></td>
 	</tr>
 </table>
 
