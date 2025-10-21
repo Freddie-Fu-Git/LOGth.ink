@@ -22,11 +22,13 @@ lang: zh_CN
 一位行业前辈在他的[博客](https://www.loekalization.com/blog/blog/2025/09/05/silksongs-real-final-boss-the-translator-who-broke-his-nda-and-wrote-like-a-dead-poet/)中写道：
 
 > Localization is best when invisible — players notice the world, not the words.
+> 
 > 本地化是幕后的工作，玩家在意的是游戏的世界，而非译者的文字。
 
 他还这样评价《空洞骑士：丝之歌》的中文本地化：
 
 > The Hollow Knight was born of God and Void. The Hollow Translation was born of ego and folly.
+> 
 > 空洞骑士诞生于神明与虚无，而空洞的翻译则源于译者的傲慢与无知。
 
 话题再回到这次的 Credits 上。我自认没有犯下《空洞骑士：丝之歌》那位译者那样傲慢、自负的错误。在参与项目的过程中，我始终尽力查证每一个术语，补充相关的背景知识与资料，只希望能为玩家带来清晰、易懂的游戏体验。于是，我决定继续使用 FreddieFu 这个用了多年的英文名，签下了这次的 Credits
