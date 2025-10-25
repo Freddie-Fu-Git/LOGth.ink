@@ -92,11 +92,12 @@ const lastModifiedLabel = new Intl.DateTimeFormat("zh-CN", {
       >
         {images.map((image) => (
             <a
-              href="javascript:void(0)"
+              href={`#${image.alt}`}
               data-fancybox="gallery"
               data-caption={image.alt}
               class="block mb-4 break-inside-avoid"
               data-src={`${image.src}`}
+              title={image.alt}
             >
               <img
                 src={`${image.src}`}
