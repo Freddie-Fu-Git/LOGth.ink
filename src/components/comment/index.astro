@@ -17,7 +17,7 @@ if (commentConfig?.artalk) {
 	commentService = "artalk";
 }
 
-const showComment = commentService === "artalk" && ((data as any).comments ?? true);
+const showComment = commentService === "artalk" && (data.comments ?? true);
 ---
 {showComment && (
   <div class="card-base p-6 mb-4">
