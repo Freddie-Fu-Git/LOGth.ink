@@ -125,6 +125,20 @@ export default defineConfig({
               {
                   target: "_blank",
                   rel: ["noopener", "noreferrer"],
+                  // 仅对外域生效：排除 logth.ink 及其子域
+                  test: (element) => {
+                      const href = element?.properties?.href;
+                      if (typeof href !== "string") return false;
+                      try {
+                          const u = new URL(href, "https://www.logth.ink/");
+                          const host = (u.hostname || "").toLowerCase();
+                          const isInternal = host === "logth.ink" || host.endsWith(".logth.ink");
+                          const isHttp = u.protocol === "http:" || u.protocol === "https:";
+                          return isHttp && !isInternal;
+                      } catch {
+                          return false;
+                      }
+                  },
               },
           ],
           [
