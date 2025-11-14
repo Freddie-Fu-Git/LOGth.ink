@@ -103,9 +103,29 @@ export async function getCategoryList(): Promise<Category[]> {
 		count[categoryName] = count[categoryName] ? count[categoryName] + 1 : 1;
 	});
 
-	const lst = Object.keys(count).sort((a, b) => {
-		return a.toLowerCase().localeCompare(b.toLowerCase());
-	});
+    const preferredOrder: Record<string, number> = {
+        "工作": 0,
+        "学习": 1,
+        "生活": 2,
+    };
+
+    const lst = Object.keys(count).sort((a, b) => {
+        const aName = a.trim();
+        const bName = b.trim();
+
+        if (aName === "其他" && bName !== "其他") return 1;
+        if (bName === "其他" && aName !== "其他") return -1;
+
+        const aIdx = preferredOrder[aName];
+        const bIdx = preferredOrder[bName];
+        const aIn = aIdx !== undefined;
+        const bIn = bIdx !== undefined;
+
+        if (aIn && bIn) return aIdx - bIdx;
+        if (aIn) return -1;
+        if (bIn) return 1;
+        return aName.toLowerCase().localeCompare(bName.toLowerCase());
+    });
 
 	const ret: Category[] = [];
 	for (const c of lst) {
