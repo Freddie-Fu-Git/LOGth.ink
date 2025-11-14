@@ -1,136 +1,166 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  // Props: pass the lightweight posts list used on Archive page
-  export let sortedPosts: Array<{ data: { published: Date | string } } | { published?: Date | string }> = [];
+import { onMount } from "svelte";
+// Props: pass the lightweight posts list used on Archive page
+export let sortedPosts: Array<
+	{ data: { published: Date | string } } | { published?: Date | string }
+> = [];
 
-  type DayCell = {
-    date: Date;
-    key: string; // YYYY-MM-DD
-    count: number;
-  };
+type DayCell = {
+	date: Date;
+	key: string; // YYYY-MM-DD
+	count: number;
+};
 
-  // Normalize to local date-only (avoid timezone shifting)
-  const toLocalDateOnly = (d: Date) => {
-    return new Date(d.getFullYear(), d.getMonth(), d.getDate());
-  };
+// Normalize to local date-only (avoid timezone shifting)
+const toLocalDateOnly = (d: Date) => {
+	return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+};
 
-  const formatYMD = (d: Date) => {
-    const y = d.getFullYear();
-    const m = (d.getMonth() + 1).toString().padStart(2, "0");
-    const day = d.getDate().toString().padStart(2, "0");
-    return `${y}-${m}-${day}`;
-  };
+const formatYMD = (d: Date) => {
+	const y = d.getFullYear();
+	const m = (d.getMonth() + 1).toString().padStart(2, "0");
+	const day = d.getDate().toString().padStart(2, "0");
+	return `${y}-${m}-${day}`;
+};
 
-  // Use native Sunday-first index: Sunday=0 ... Saturday=6
-  const sundayIndex = (d: Date) => d.getDay();
+// Use native Sunday-first index: Sunday=0 ... Saturday=6
+const sundayIndex = (d: Date) => d.getDay();
 
-  // Build a count map for posts per day
-  const countMap: Map<string, number> = new Map();
-  let earliestPostDate: Date | null = null;
+// Build a count map for posts per day
+const countMap: Map<string, number> = new Map();
+let earliestPostDate: Date | null = null;
 
-  for (const p of sortedPosts) {
-    // Handle both shapes: { data: { published } } and direct { published }
-    const raw = (p as any)?.data?.published ?? (p as any)?.published;
-    if (!raw) continue;
-    const d = toLocalDateOnly(new Date(raw));
-    const k = formatYMD(d);
-    countMap.set(k, (countMap.get(k) || 0) + 1);
-    if (!earliestPostDate || d < earliestPostDate) {
-      earliestPostDate = d;
-    }
-  }
+for (const p of sortedPosts) {
+	// Handle both shapes: { data: { published } } and direct { published }
+	const raw = (p as any)?.data?.published ?? (p as any)?.published;
+	if (!raw) continue;
+	const d = toLocalDateOnly(new Date(raw));
+	const k = formatYMD(d);
+	countMap.set(k, (countMap.get(k) || 0) + 1);
+	if (!earliestPostDate || d < earliestPostDate) {
+		earliestPostDate = d;
+	}
+}
 
-  const today = toLocalDateOnly(new Date());
+const today = toLocalDateOnly(new Date());
 
-  // Choose a reasonable start: show the last 365 days, aligned to Sunday.
-  // Align to Sunday so week rows are ordered Sun, Mon ... Sat.
-  let start = new Date(today);
-  start.setDate(start.getDate() - 364);
-  // Align start date to the previous Sunday
-  const offsetToSunday = sundayIndex(start); // 0 if already Sunday
-  if (offsetToSunday > 0) start.setDate(start.getDate() - offsetToSunday);
+// Choose a reasonable start: show the last 365 days, aligned to Sunday.
+// Align to Sunday so week rows are ordered Sun, Mon ... Sat.
+let start = new Date(today);
+start.setDate(start.getDate() - 364);
+// Align start date to the previous Sunday
+const offsetToSunday = sundayIndex(start); // 0 if already Sunday
+if (offsetToSunday > 0) start.setDate(start.getDate() - offsetToSunday);
 
-  // Build continuous days from start to today
-  const days: DayCell[] = [];
-  for (let d = new Date(start); d <= today; d.setDate(d.getDate() + 1)) {
-    const dd = new Date(d);
-    const k = formatYMD(dd);
-    days.push({ date: dd, key: k, count: countMap.get(k) || 0 });
-  }
+// Build continuous days from start to today
+const days: DayCell[] = [];
+for (let d = new Date(start); d <= today; d.setDate(d.getDate() + 1)) {
+	const dd = new Date(d);
+	const k = formatYMD(dd);
+	days.push({ date: dd, key: k, count: countMap.get(k) || 0 });
+}
 
-  // Group into weeks (columns), each week has 7 days (Sun..Sat)
-  const weeks: DayCell[][] = [];
-  for (let i = 0; i < days.length; i += 7) {
-    weeks.push(days.slice(i, i + 7));
-  }
+// Group into weeks (columns), each week has 7 days (Sun..Sat)
+const weeks: DayCell[][] = [];
+for (let i = 0; i < days.length; i += 7) {
+	weeks.push(days.slice(i, i + 7));
+}
 
-  // Responsive: decide months to show based on viewport width
-  let viewportWidth = 1024;
-  onMount(() => {
-    viewportWidth = window.innerWidth;
-    const handler = () => { viewportWidth = window.innerWidth; };
-    window.addEventListener("resize", handler);
-    return () => window.removeEventListener("resize", handler);
-  });
-  $: monthsToShow = viewportWidth <= 375 ? 3 : (viewportWidth <= 768 ? 6 : 12);
+// Responsive: decide months to show based on viewport width
+let viewportWidth = 1024;
+onMount(() => {
+	viewportWidth = window.innerWidth;
+	const handler = () => {
+		viewportWidth = window.innerWidth;
+	};
+	window.addEventListener("resize", handler);
+	return () => window.removeEventListener("resize", handler);
+});
+$: monthsToShow = viewportWidth <= 375 ? 3 : viewportWidth <= 768 ? 6 : 12;
 
-  // Compute month labels: show label above the first column where month changes
-  const MONTH_ABBR = [
-    "Jan.", "Feb.", "Mar.", "Apr.", "May.", "Jun.",
-    "Jul.", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."
-  ];
+// Compute month labels: show label above the first column where month changes
+const MONTH_ABBR = [
+	"Jan.",
+	"Feb.",
+	"Mar.",
+	"Apr.",
+	"May.",
+	"Jun.",
+	"Jul.",
+	"Aug.",
+	"Sep.",
+	"Oct.",
+	"Nov.",
+	"Dec.",
+];
 
-  // Build anchors for the 1st day of each month within the range [start, today]
-  let firstOfMonth = new Date(start.getFullYear(), start.getMonth(), 1);
-  if (firstOfMonth < start) {
-    firstOfMonth = new Date(start.getFullYear(), start.getMonth() + 1, 1);
-  }
+// Build anchors for the 1st day of each month within the range [start, today]
+let firstOfMonth = new Date(start.getFullYear(), start.getMonth(), 1);
+if (firstOfMonth < start) {
+	firstOfMonth = new Date(start.getFullYear(), start.getMonth() + 1, 1);
+}
 
-  const monthAnchors: Date[] = [];
-  for (let d = new Date(firstOfMonth); d <= today; d = new Date(d.getFullYear(), d.getMonth() + 1, 1)) {
-    monthAnchors.push(new Date(d));
-  }
-  // Limit to 12 labels at most (drop the earliest if more than 12)
-  const limitedAnchors = monthAnchors.length > 12
-    ? monthAnchors.slice(monthAnchors.length - 12)
-    : monthAnchors;
+const monthAnchors: Date[] = [];
+for (
+	let d = new Date(firstOfMonth);
+	d <= today;
+	d = new Date(d.getFullYear(), d.getMonth() + 1, 1)
+) {
+	monthAnchors.push(new Date(d));
+}
+// Limit to 12 labels at most (drop the earliest if more than 12)
+const limitedAnchors =
+	monthAnchors.length > 12
+		? monthAnchors.slice(monthAnchors.length - 12)
+		: monthAnchors;
 
-  // Prepare an array mapped to week columns; place label at the column containing the 1st of month
-  const monthLabelsForWeeks: string[] = Array(weeks.length).fill("");
-  for (const anchor of limitedAnchors) {
-    const daysDiff = Math.floor((toLocalDateOnly(anchor).getTime() - toLocalDateOnly(start).getTime()) / (24 * 60 * 60 * 1000));
-    const weekIdx = Math.floor(daysDiff / 7);
-    if (weekIdx >= 0 && weekIdx < monthLabelsForWeeks.length) {
-      const abbr = MONTH_ABBR[anchor.getMonth()];
-      monthLabelsForWeeks[weekIdx] = abbr;
-    }
-  }
+// Prepare an array mapped to week columns; place label at the column containing the 1st of month
+const monthLabelsForWeeks: string[] = Array(weeks.length).fill("");
+for (const anchor of limitedAnchors) {
+	const daysDiff = Math.floor(
+		(toLocalDateOnly(anchor).getTime() - toLocalDateOnly(start).getTime()) /
+			(24 * 60 * 60 * 1000),
+	);
+	const weekIdx = Math.floor(daysDiff / 7);
+	if (weekIdx >= 0 && weekIdx < monthLabelsForWeeks.length) {
+		const abbr = MONTH_ABBR[anchor.getMonth()];
+		monthLabelsForWeeks[weekIdx] = abbr;
+	}
+}
 
-  // Compute the starting week index for the displayed range based on monthsToShow
-  let displayStartWeekIdx = 0;
-  $: {
-    const earliestDisplayMonth = new Date(today.getFullYear(), today.getMonth() - (monthsToShow - 1), 1);
-    const diffDisplayDays = Math.floor((toLocalDateOnly(earliestDisplayMonth).getTime() - toLocalDateOnly(start).getTime()) / (24 * 60 * 60 * 1000));
-    const idx = Math.floor(diffDisplayDays / 7);
-    displayStartWeekIdx = Math.max(0, Math.min(idx, weeks.length - 1));
-  }
+// Compute the starting week index for the displayed range based on monthsToShow
+let displayStartWeekIdx = 0;
+$: {
+	const earliestDisplayMonth = new Date(
+		today.getFullYear(),
+		today.getMonth() - (monthsToShow - 1),
+		1,
+	);
+	const diffDisplayDays = Math.floor(
+		(toLocalDateOnly(earliestDisplayMonth).getTime() -
+			toLocalDateOnly(start).getTime()) /
+			(24 * 60 * 60 * 1000),
+	);
+	const idx = Math.floor(diffDisplayDays / 7);
+	displayStartWeekIdx = Math.max(0, Math.min(idx, weeks.length - 1));
+}
 
-  // Slice weeks and month labels to the displayed range
-  let weeksDisplay: DayCell[][] = [];
-  let monthLabelsDisplay: string[] = [];
-  $: weeksDisplay = weeks.slice(displayStartWeekIdx);
-  $: monthLabelsDisplay = monthLabelsForWeeks.slice(displayStartWeekIdx);
+// Slice weeks and month labels to the displayed range
+let weeksDisplay: DayCell[][] = [];
+let monthLabelsDisplay: string[] = [];
+$: weeksDisplay = weeks.slice(displayStartWeekIdx);
+$: monthLabelsDisplay = monthLabelsForWeeks.slice(displayStartWeekIdx);
 
-  // Intensity levels based on count (0,1,2,3,4+)
-  const levelFor = (count: number) => {
-    if (count === 0) return 0; // level-0
-    if (count === 1) return 1; // level-1
-    if (count === 2) return 2; // level-2
-    if (count === 3) return 3; // level-3
-    return 4; // level-4 for 4 or more
-  };
+// Intensity levels based on count (0,1,2,3,4+)
+const levelFor = (count: number) => {
+	if (count === 0) return 0; // level-0
+	if (count === 1) return 1; // level-1
+	if (count === 2) return 2; // level-2
+	if (count === 3) return 3; // level-3
+	return 4; // level-4 for 4 or more
+};
 
-  const weekdayLabels = ["Sun.", "Mon.", "Tue.", "Wed.", "Thu.", "Fri.", "Sat."]; // Sunday-first
+const weekdayLabels = ["Sun.", "Mon.", "Tue.", "Wed.", "Thu.", "Fri.", "Sat."]; // Sunday-first
 </script>
 
 <div class="heatmap card-base mb-4 p-4 rounded-[var(--radius-large)]">
