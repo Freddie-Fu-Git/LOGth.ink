@@ -31,8 +31,7 @@ const countMap: Map<string, number> = new Map();
 let earliestPostDate: Date | null = null;
 
 for (const p of sortedPosts) {
-	// Handle both shapes: { data: { published } } and direct { published }
-	const raw = (p as any)?.data?.published ?? (p as any)?.published;
+	const raw = "data" in p ? p.data.published : p.published;
 	if (!raw) continue;
 	const d = toLocalDateOnly(new Date(raw));
 	const k = formatYMD(d);
