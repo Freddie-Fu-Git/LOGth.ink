@@ -1,5 +1,5 @@
 ---
-title: 上班摸鱼实测：Qwen3 vs ChatGPT，谁能把 Kimi 砍到破防？
+title: 摸鱼实测：Qwen3 vs ChatGPT，谁能把 Kimi 砍到破防？
 published: 2025-11-23
 description: '上班摸鱼中的实验，记录 Qwen3 与 ChatGPT 在 Kimi 砍价活动中的表现'
 image: ''
