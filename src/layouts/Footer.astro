@@ -33,7 +33,7 @@ const yearDisplay = currentYear > START_YEAR ? `${START_YEAR} - ${currentYear}` 
         <div class="items-center flex flex-wrap gap-4 font-medium">
           <div>© {yearDisplay} {lang === 'en' ? 'crafted by' : '由'} {SITE.author} {lang === 'en' ? '' : '精心打造'}。</div>
           <div class="grow"></div>
-          <div class="flex gap-2 items-center" transition:persist="footer-theme-toggle">
+          <div class="flex gap-2 items-center">
             <a
               href="https://github.com/Dnzzk2/Litos"
               target="_blank"
