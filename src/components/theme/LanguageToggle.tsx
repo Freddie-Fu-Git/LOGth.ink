@@ -3,14 +3,19 @@ export default function LanguageToggle() {
 
   const toggleLanguage = () => {
     const nextLang = currentLang === 'en' ? 'zh-cn' : 'en'
-    
+
     const pathname = window.location.pathname
     let newPathname = pathname
 
+    const parts = pathname.split('/').filter(Boolean)
+    const knownRoots = new Set(['about', 'posts', 'projects', 'photos', 'tags', '404'])
+    const isEnArticle = parts.length === 2 && parts[0] === 'en' && !knownRoots.has(parts[1])
+    const isZhArticle = parts.length === 1 && !knownRoots.has(parts[0])
+
     if (nextLang === 'en') {
-      newPathname = `/en${pathname}`
+      newPathname = isZhArticle ? '/en/' : `/en${pathname}`
     } else {
-      newPathname = pathname.replace(/^\/en/, '')
+      newPathname = isEnArticle ? '/' : pathname.replace(/^\/en/, '')
     }
 
     if (newPathname === '') newPathname = '/'
