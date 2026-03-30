@@ -1,5 +1,6 @@
 ;(function () {
   const STORAGE_KEY = 'theme'
+  const EVENT_NAME = 'litos:themechange'
 
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)')
   const root = document.documentElement
@@ -23,6 +24,14 @@
     return theme === 'dark' || (theme === 'system' && prefersDark.matches)
   }
 
+  function dispatchThemeChange(theme) {
+    window.dispatchEvent(
+      new CustomEvent(EVENT_NAME, {
+        detail: { theme },
+      })
+    )
+  }
+
   function applyTheme(theme) {
     const isDark = getIsDark(theme)
 
@@ -32,6 +41,8 @@
     if (metaThemeColor) {
       metaThemeColor.setAttribute('content', isDark ? '#09090b' : '#FFFFFF')
     }
+
+    dispatchThemeChange(getStoredTheme())
   }
 
   window.__theme = {
@@ -39,6 +50,7 @@
     setStoredTheme,
     getIsDark,
     applyTheme,
+    eventName: EVENT_NAME,
   }
 
   const savedTheme = getStoredTheme()

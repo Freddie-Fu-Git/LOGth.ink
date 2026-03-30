@@ -8,6 +8,7 @@ declare global {
       setStoredTheme?: (theme: 'light' | 'dark' | 'system') => void
       getIsDark?: (theme: 'light' | 'dark' | 'system') => boolean
       applyTheme?: (theme: 'light' | 'dark' | 'system') => void
+      eventName?: string
     }
   }
 }

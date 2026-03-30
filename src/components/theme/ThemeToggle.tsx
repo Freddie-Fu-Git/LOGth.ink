@@ -6,11 +6,38 @@ const ThemeToggle = () => {
   const [theme, setTheme] = useState<Theme>('system')
 
   useEffect(() => {
-    const stored = window.__theme?.getStoredTheme?.()
-    if (stored === 'light' || stored === 'dark' || stored === 'system') {
-      setTheme(stored)
-    } else {
-      setTheme('system')
+    const syncFromGlobal = () => {
+      const stored = window.__theme?.getStoredTheme?.()
+      if (stored === 'light' || stored === 'dark' || stored === 'system') {
+        setTheme(stored)
+      } else {
+        setTheme('system')
+      }
+    }
+
+    syncFromGlobal()
+
+    const eventName = window.__theme?.eventName || 'litos:themechange'
+
+    const onThemeChange = (event: Event) => {
+      const themeFromEvent = (event as CustomEvent<{ theme?: Theme }>).detail?.theme
+      if (themeFromEvent === 'light' || themeFromEvent === 'dark' || themeFromEvent === 'system') {
+        setTheme(themeFromEvent)
+      } else {
+        syncFromGlobal()
+      }
+    }
+
+    const onStorage = (event: StorageEvent) => {
+      if (event.key === 'theme') syncFromGlobal()
+    }
+
+    window.addEventListener(eventName, onThemeChange)
+    window.addEventListener('storage', onStorage)
+
+    return () => {
+      window.removeEventListener(eventName, onThemeChange)
+      window.removeEventListener('storage', onStorage)
     }
   }, [])
 
