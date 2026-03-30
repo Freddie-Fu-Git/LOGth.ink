@@ -140,6 +140,13 @@ function resolveImagePath(imageUrl, filePath) {
   return path.resolve(fileDir, imageUrl)
 }
 
+function isRemoteLikeUrl(value) {
+  return (
+    typeof value === 'string' &&
+    (/^https?:\/\//i.test(value) || /^\/\//.test(value) || /^data:/i.test(value) || /^blob:/i.test(value))
+  )
+}
+
 /**
  * 处理单个图像节点
  */
@@ -220,6 +227,9 @@ export async function generateLQIPFromPath(src) {
     let imagePath
 
     if (typeof src === 'string') {
+      if (isRemoteLikeUrl(src)) {
+        return null
+      }
       imagePath = resolveImagePath(src, '')
     } else if (src && typeof src === 'object') {
       // 处理Astro ImageMetadata对象
@@ -231,6 +241,10 @@ export async function generateLQIPFromPath(src) {
         imagePath = src.pathname
       } else if (src.src) {
         let cleanSrc = src.src
+
+        if (isRemoteLikeUrl(cleanSrc)) {
+          return null
+        }
 
         // 移除Astro的特殊前缀和查询参数
         if (cleanSrc.includes('/@fs/')) {
