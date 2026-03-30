@@ -3,7 +3,6 @@ name: "LOG & THINK"
 description: "FreddieFu's personal blog. Based on the Astro framework, with the Litos theme modified"
 githubUrl: "https://github.com/Dnzzk2/Litos"
 website: "https://github.com/Freddie-Fu-Git/LOGth.ink"
-type: "Website"
 star: 0
 fork: 0
 lang: "en"

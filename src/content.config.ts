@@ -53,7 +53,6 @@ const projects = defineCollection({
       description: z.string(),
       githubUrl: z.string(),
       website: z.string(),
-      type: z.string(),
       icon: image().optional(),
       imageClass: z.string().optional(),
       star: z.number(),
