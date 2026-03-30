@@ -254,7 +254,7 @@ export const COMMENT_CONFIG: CommentConfig = {
   system: 'artalk',
   artalk: {
     server: 'https://artalk.logth.ink',
-    site: 'LOGth.ink',
+    site: 'LOG&THINK',
   },
   gitalk: {
     clientID: import.meta.env.PUBLIC_GITHUB_CLIENT_ID,
