@@ -16,7 +16,7 @@ import type {
 export const SITE: Site = {
   title: 'LOG & THINK',
   description: 'FreddieFu的个人博客',
-  website: 'https://litos.vercel.app/',
+  website: 'https://www.logth.ink/',
   lang: 'zh-cn',
   base: '/',
   author: 'FreddieFu',
