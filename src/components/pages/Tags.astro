@@ -1,0 +1,92 @@
+---
+import PageTitle from '~/components/base/PageTitle.astro'
+import Layout from '~/layouts/Layout.astro'
+import { getAllPosts, getAllTags } from '~/lib/data'
+import { useTranslations, useTranslatedPath } from '~/i18n/utils'
+
+interface Props {
+  lang: 'en' | 'zh-cn'
+}
+
+const { lang } = Astro.props
+const t = useTranslations(lang)
+const translatePath = useTranslatedPath(lang)
+
+const title = t('tags.title')
+const description = t('tags.description')
+const introduce = t('tags.introduce')
+
+const [tagsMap, posts] = await Promise.all([getAllTags(lang), getAllPosts(lang)])
+
+const sortedTags = Object.entries(tagsMap)
+  .map(([tag, count]) => ({
+    name: tag,
+    count,
+  }))
+  .sort((a, b) => b.count - a.count)
+
+const maxCount = Math.max(...sortedTags.map((t) => t.count), 0)
+---
+
+<Layout {title} {description}>
+  <div class="relative z-[1] py-8 pb-10 px-6 sm:px-8">
+    <!-- 标题区域 -->
+    <div class="mb-12">
+      <PageTitle {title} {introduce} />
+
+      <!-- 统计信息 -->
+      <div class="mt-6 flex items-center gap-6 text-sm text-muted-foreground">
+        <span class="flex items-center gap-1.5">
+          <span class="icon-[ph--hash] size-4"></span>
+          {sortedTags.length} {t('home.tagsTotal')}
+        </span>
+        <span class="flex items-center gap-1.5">
+          <span class="icon-[ph--article] size-4"></span>
+          {posts.length} {t('home.postsTotal')}
+        </span>
+      </div>
+    </div>
+
+    <!-- 标签网格 -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 fade-up" data-astro-transition="animate">
+      {
+        sortedTags.map((tag, index) => {
+          const size = 0.85 + (tag.count / maxCount) * 0.4
+          const opacity = 0.6 + (tag.count / maxCount) * 0.4
+
+          return (
+            <a
+              href={translatePath(`/tags/${tag.name}`)}
+              class="group relative flex items-center justify-between p-4 rounded-xl border border-border/50 bg-muted/30 hover:bg-primary/5 hover:border-primary/30 transition-all duration-300"
+              style={`animation-delay: ${index * 50}ms`}
+            >
+              <div class="flex items-center gap-3">
+                <div
+                  class="flex items-center justify-center w-8 h-8 rounded-lg bg-background border border-border/50 group-hover:border-primary/30 group-hover:scale-110 transition-all duration-300"
+                  style={`transform: scale(${size}); opacity: ${opacity}`}
+                >
+                  <span class="icon-[ph--tag-simple-duotone] w-4 h-4 text-primary" />
+                </div>
+                <span class="font-medium group-hover:text-primary transition-colors uppercase tracking-wider text-sm">
+                  {tag.name}
+                </span>
+              </div>
+              <div class="flex items-center gap-1.5 px-2 py-1 rounded-md bg-background border border-border/50 text-[10px] font-bold text-muted-foreground group-hover:text-primary group-hover:border-primary/30 transition-all">
+                {tag.count}
+              </div>
+            </a>
+          )
+        })
+      }
+    </div>
+
+    {
+      sortedTags.length === 0 && (
+        <div class="flex flex-col items-center justify-center py-20 text-muted-foreground">
+          <span class="icon-[ph--tag-simple-duotone] w-12 h-12 mb-4 opacity-20" />
+          <p>{t('home.noTags')}</p>
+        </div>
+      )
+    }
+  </div>
+</Layout>

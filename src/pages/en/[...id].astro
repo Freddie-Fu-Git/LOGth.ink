@@ -1,0 +1,21 @@
+---
+import { getAllPosts } from '~/lib/data'
+import PostDetails from '~/components/pages/PostDetails.astro'
+
+export async function getStaticPaths() {
+  const sortedPosts = await getAllPosts('en')
+  return sortedPosts.map((post, index) => ({
+    params: { id: post.id },
+    props: {
+      post,
+      posts: sortedPosts,
+      prev: index + 1 < sortedPosts.length ? sortedPosts[index + 1] : null,
+      next: index > 0 ? sortedPosts[index - 1] : null,
+    },
+  }))
+}
+
+const { post, posts, prev, next } = Astro.props
+---
+
+<PostDetails post={post} posts={posts} prev={prev} next={next} lang="en" />

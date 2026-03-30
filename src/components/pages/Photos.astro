@@ -1,0 +1,39 @@
+---
+import Layout from '~/layouts/Layout.astro'
+import PhotoTimeline from '~/components/photos/PhotoTimeline.astro'
+import PageTitle from '~/components/base/PageTitle.astro'
+import { PhotosList } from '~/lib/photos'
+import { useTranslations } from '~/i18n/utils'
+
+interface Props {
+  lang: 'en' | 'zh-cn'
+}
+
+const { lang } = Astro.props
+const t = useTranslations(lang)
+
+const title = t('photos.title')
+const description = t('photos.description')
+const introduce = t('photos.introduce')
+
+const filteredPhotos = PhotosList.filter((photo) => !photo.lang || photo.lang === lang)
+---
+
+<Layout {title} {description}>
+  <div class="relative z-[1] py-8 pb-10 px-6 sm:px-8">
+    <PageTitle {title} {introduce} />
+    <div class="mt-12">
+      {
+        filteredPhotos.length > 0 ? (
+          <PhotoTimeline photoData={filteredPhotos} />
+        ) : (
+          <div class="text-muted-foreground mb-4">
+            <p class="text-sm">
+              {t('photos.noPhotos')}
+            </p>
+          </div>
+        )
+      }
+    </div>
+  </div>
+</Layout>

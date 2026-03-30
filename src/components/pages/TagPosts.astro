@@ -1,0 +1,57 @@
+---
+import type { Page } from 'astro'
+import type { CollectionEntry } from 'astro:content'
+import { POSTS_CONFIG } from '~/config'
+import Layout from '~/layouts/Layout.astro'
+import Pagination from '~/components/base/Pagination.astro'
+import List from '~/components/posts/card/List.astro'
+import { useTranslations, useTranslatedPath } from '~/i18n/utils'
+
+interface Props {
+  page: Page<CollectionEntry<'posts'>>
+  tag: string
+  lang: 'en' | 'zh-cn'
+}
+
+const { page, tag, lang } = Astro.props
+const t = useTranslations(lang)
+const translatePath = useTranslatedPath(lang)
+
+const title = `#${tag}`
+const description = lang === 'en' ? `Posts with the tag #${tag}` : `包含标签 #${tag} 的文章`
+---
+
+<Layout {title} {description}>
+  <div class="relative z-[1] py-8 pb-10 px-6 sm:px-8">
+    <div class="mb-12 md:mb-16">
+      <div class="flex flex-col gap-3">
+        <nav class="flex items-center gap-3 text-sm text-muted-foreground/80">
+          <a href={translatePath('/tags')} class="group flex items-center gap-2 hover:text-primary transition-colors">
+            <span class="icon-[ph--tag-simple] w-4 h-4"></span>
+            <span>{t('nav.tags')}</span>
+          </a>
+          <span class="text-muted-foreground/30">/</span>
+          <span class="text-foreground/90">#{tag}</span>
+        </nav>
+
+        <div class="flex gap-2 justify-between">
+          <h1 class="text-xl sm:text-3xl font-medium tracking-wide">
+            #{tag}
+          </h1>
+          <div class="flex flex-col items-end justify-center gap-1 text-sm text-muted-foreground/70">
+            <div class="flex items-center gap-2">
+              <span class="icon-[ph--article-medium] w-4 h-4"></span>
+              <span>{page.total} {t('home.postsTotal')}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="space-y-8 fade-up">
+      <List posts={page.data} type={POSTS_CONFIG.tagsPageConfig.type} coverLayout={POSTS_CONFIG.tagsPageConfig?.coverLayout} />
+    </div>
+
+    <Pagination {page} baseUrl={translatePath(`/tags/${tag}`)} class="mt-12" />
+  </div>
+</Layout>

@@ -1,0 +1,130 @@
+---
+interface Props {
+  id: string
+  title: string
+}
+
+const { id, title } = Astro.props
+---
+
+<div id="artalk-container" data-id={id} data-title={title}></div>
+
+<script>
+  import Artalk from 'artalk'
+  import 'artalk/dist/Artalk.css'
+  import { COMMENT_CONFIG } from '~/config'
+
+  const { artalk } = COMMENT_CONFIG
+
+  let artalkInstance: Artalk | null = null
+  let observer: IntersectionObserver | null = null
+  let isInitialized = false
+
+  function initArtalk() {
+    if (!artalk || isInitialized) return
+    isInitialized = true
+
+    const container = document.getElementById('artalk-container')
+    if (!container) return
+
+    const id = container.dataset.id || ''
+    const title = container.dataset.title || ''
+
+    artalkInstance = Artalk.init({
+      el: '#artalk-container',
+      pageKey: id,
+      pageTitle: title,
+      server: artalk.server,
+      site: artalk.site,
+      darkMode: document.documentElement.classList.contains('dark'),
+    })
+
+    // 监听主题变化
+    const themeObserver = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+          const isDark = document.documentElement.classList.contains('dark')
+          artalkInstance?.setDarkMode(isDark)
+        }
+      })
+    })
+
+    themeObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    })
+  }
+
+  function isElementInViewport(element: Element) {
+    const rect = element.getBoundingClientRect()
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight
+    return rect.top <= windowHeight + 3000 && rect.bottom >= -3000
+  }
+
+  function setupObserver() {
+    const container = document.getElementById('artalk-container')
+    if (!container) return
+
+    if (isElementInViewport(container)) {
+      initArtalk()
+      return
+    }
+
+    observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !isInitialized) {
+            initArtalk()
+            cleanup()
+          }
+        })
+      },
+      {
+        rootMargin: '3000px',
+        threshold: 0,
+      }
+    )
+
+    observer.observe(container)
+  }
+
+  function cleanup() {
+    if (observer) {
+      observer.disconnect()
+      observer = null
+    }
+    if (artalkInstance) {
+      artalkInstance.destroy()
+      artalkInstance = null
+    }
+  }
+
+  function resetAndInitialize() {
+    isInitialized = false
+    cleanup()
+    setupObserver()
+  }
+
+  // Initial setup
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupObserver)
+  } else {
+    setupObserver()
+  }
+
+  document.addEventListener('astro:page-load', resetAndInitialize)
+  document.addEventListener('astro:before-preparation', cleanup)
+  window.addEventListener('beforeunload', cleanup)
+</script>
+
+<style is:global>
+  #artalk-container {
+    min-height: 10px;
+    margin-top: 2rem;
+  }
+  
+  .dark .atk-main-editor,
+  .dark .atk-comment-wrap {
+    background-color: transparent !important;
+  }
+</style>

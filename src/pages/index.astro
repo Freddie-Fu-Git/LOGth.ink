@@ -1,0 +1,21 @@
+---
+import Home from '~/components/pages/Home.astro'
+---
+
+<script is:inline>
+  const getPreferredLanguage = () => {
+    const savedLang = localStorage.getItem('preferred-lang')
+    if (savedLang) return savedLang
+
+    const browserLang = navigator.language.toLowerCase()
+    if (browserLang.startsWith('en')) return 'en'
+    return 'zh-cn'
+  }
+
+  const preferredLang = getPreferredLanguage()
+  if (preferredLang === 'en' && window.location.pathname === '/') {
+    window.location.href = '/en'
+  }
+</script>
+
+<Home lang="zh-cn" />

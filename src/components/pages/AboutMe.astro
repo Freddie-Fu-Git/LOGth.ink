@@ -1,0 +1,117 @@
+---
+import Layout from '~/layouts/Layout.astro'
+import SocialLink from '~/components/base/SocialLink.astro'
+import { SOCIAL_LINKS } from '~/config'
+import { aboutMeCareer, aboutMeProfile } from '~/lib/aboutMe'
+import { useTranslations } from '~/i18n/utils'
+import SectionDivider from '~/components/base/SectionDivider.astro'
+
+interface Props {
+  lang: 'en' | 'zh-cn'
+}
+
+const { lang } = Astro.props
+const t = useTranslations(lang)
+
+const profile = aboutMeProfile[lang]
+const career = aboutMeCareer[lang]
+
+const title = t('nav.aboutme')
+const description = `${profile.name} · ${profile.title}`
+const proseStyle =
+  lang === 'en' ? 'text-align: left; hyphens: auto; overflow-wrap: break-word;' : 'text-align: justify; text-justify: inter-ideograph;'
+---
+
+<Layout {title} {description}>
+  <div class="relative z-[1] py-8 pb-10 px-6 sm:px-8">
+    <div class="mb-14">
+      <h1 class="text-4xl sm:text-6xl tracking-tight font-bold">{profile.name}</h1>
+      <p class="mt-2 font-light text-muted-foreground text-xl sm:text-[28px]">
+        {profile.title}
+      </p>
+
+      <div
+        class:list={['mt-8', 'pro', 'text-muted-foreground', 'text-pretty', lang === 'en' ? 'max-w-none' : 'max-w-2xl']}
+        style={proseStyle}
+      >
+        {profile.bioLines.map((line) => <p>{line}</p>)}
+      </div>
+
+      <div class="mt-8 flex flex-wrap gap-6">
+        {
+          SOCIAL_LINKS.map((item) => (
+            <SocialLink
+              href={item.url}
+              icon={item.icon}
+              aria-label={`Link of ${item.name}`}
+              count={item.count}
+              label={t('home.followers')}
+            />
+          ))
+        }
+      </div>
+    </div>
+
+    <SectionDivider className="my-12 -mx-6 sm:-mx-8" />
+
+    <section class="mt-4">
+      <div class="mb-8">
+        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight">{lang === 'en' ? 'Career' : '工作经历'}</h2>
+        <div
+          class:list={['mt-3', 'pro', 'text-muted-foreground', lang !== 'en' && 'text-pretty', lang === 'en' ? 'max-w-none' : 'max-w-2xl']}
+          style={proseStyle}
+        >
+          <p>{profile.careerSummary}</p>
+        </div>
+      </div>
+
+      <SectionDivider className="-mx-6 sm:-mx-8" />
+
+      {
+        career.length === 0 ? (
+          <div class="text-muted-foreground text-sm">
+            {lang === 'en' ? 'Add your career entries in src/lib/aboutMe.ts' : '请在 src/lib/aboutMe.ts 中添加你的工作经历条目'}
+          </div>
+        ) : (
+          <div>
+            {career.map((item) => (
+              <>
+                <article class="group -mx-6 sm:-mx-8 px-6 sm:px-8 py-10 transition-colors duration-200 hover:bg-accent/10">
+                  <div class="min-w-0 w-full">
+                    <div class="flex items-end justify-between gap-6">
+                      <div class="text-sm text-muted-foreground/70">{item.location}</div>
+                      <div class="shrink-0 text-sm text-muted-foreground/70 leading-none">{item.date}</div>
+                    </div>
+
+                    <div class="mt-2 flex flex-wrap items-end gap-x-2 gap-y-1">
+                      <h3 class="text-lg sm:text-xl font-bold text-foreground leading-none">{item.role}</h3>
+                      <span class="text-muted-foreground/60 font-medium text-base lowercase leading-none">at</span>
+                      <span class="text-foreground/80 font-semibold text-xl sm:text-2xl leading-none group-hover:text-foreground transition-colors">
+                        {item.company}
+                      </span>
+                    </div>
+
+                    {item.description && (
+                      <div
+                        class:list={['mt-4', 'pro', 'text-muted-foreground', 'text-pretty', lang === 'en' ? 'max-w-none' : 'max-w-3xl']}
+                        style={proseStyle}
+                      >
+                        {item.description
+                          .split('\n')
+                          .filter(Boolean)
+                          .map((line) => (
+                            <p>{line}</p>
+                          ))}
+                      </div>
+                    )}
+                  </div>
+                </article>
+                <SectionDivider className="-mx-6 sm:-mx-8" />
+              </>
+            ))}
+          </div>
+        )
+      }
+    </section>
+  </div>
+</Layout>

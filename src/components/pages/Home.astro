@@ -1,0 +1,144 @@
+---
+import { SITE, SKILLSSHOWCASE_CONFIG, SOCIAL_LINKS } from '~/config.ts'
+import { GITHUB_CONFIG, POSTS_CONFIG } from '~/config.ts'
+import Layout from '~/layouts/Layout.astro'
+import SectionDivider from '~/components/base/SectionDivider.astro'
+import WordHeatmap from '~/components/base/WordHeatmap'
+import SocialLink from '~/components/base/SocialLink.astro'
+import List from '~/components/posts/card/List.astro'
+import SkillsShowcase from '~/components/base/SkillsShowcase.astro'
+import { getAllPosts, getNumPosts, getPinnedPosts } from '~/lib/data'
+import { useTranslations } from '~/i18n/utils'
+import { render } from 'astro:content'
+
+interface Props {
+  lang: 'en' | 'zh-cn'
+}
+
+const { lang } = Astro.props
+const t = useTranslations(lang)
+
+const { ENABLED, TOOLTIP_ENABLED } = GITHUB_CONFIG
+const { size, type } = POSTS_CONFIG.homePageConfig
+const { SKILLS_ENABLED, SKILLS_DATA } = SKILLSSHOWCASE_CONFIG
+
+const toISODateInTimeZone = (d: Date, timeZone: string) => {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(d)
+
+  const y = parts.find((p) => p.type === 'year')?.value
+  const m = parts.find((p) => p.type === 'month')?.value
+  const day = parts.find((p) => p.type === 'day')?.value
+  return `${y}-${m}-${day}`
+}
+
+const heatPosts = await getAllPosts(lang)
+const wordByDate = new Map<string, number>()
+
+for (const post of heatPosts) {
+  const dateISO = toISODateInTimeZone(post.data.pubDate, 'Asia/Shanghai')
+  const { remarkPluginFrontmatter } = await render(post)
+  const wc = Number(remarkPluginFrontmatter?.wordCount || 0)
+  wordByDate.set(dateISO, (wordByDate.get(dateISO) || 0) + wc)
+}
+
+let showPosts = []
+const pinnedPosts = await getPinnedPosts(lang)
+const hasPinnedPosts = pinnedPosts.length > 0
+if (hasPinnedPosts) {
+  showPosts = pinnedPosts
+} else {
+  showPosts = await getNumPosts(size, lang)
+}
+
+const postsHref = lang === 'en' ? '/en/posts/' : '/posts/'
+---
+
+<Layout title="" description={t('site.description')}>
+  <div class="relative z-[1]">
+    <div class="py-8 pb-10 px-6 sm:px-8">
+      <h1 class="flex flex-col gap-2">
+        <span class="text-4xl sm:text-5xl tracking-tight"> {SITE.title} </span>
+      </h1>
+      <div class="pro text-muted-foreground max-w-none" style="text-align: justify; text-justify: inter-ideograph;">
+        {
+          lang === 'en' ? (
+            <>
+              <p>Hiii there, welcome to LOG & THINK !</p>
+              <p>
+                Here I will log my thoughts and ideas from work and study, spanning both HR and localization translation from time to time.
+                I will also share my experiments with fresh technologies.
+              </p>
+              <p>Hope these words connect with you in some way.</p>
+            </>
+          ) : (
+            <>
+              <p>Hiii 欢迎来到我的博客</p>
+              <p>LOG & THINK 是我偶尔记录工作、学习与生活所思所感的地方，也会分享一些对新技术的尝试</p>
+              <p>希望我的文字能为你带来一点点启发</p>
+            </>
+          )
+        }
+      </div>
+      <div class="mt-6 flex gap-6">
+        {
+          SOCIAL_LINKS.map((item) => {
+            return (
+              <SocialLink
+                href={item.url}
+                icon={item.icon}
+                aria-label={`Link of ${item.name}`}
+                count={item.count}
+                label={t('home.followers')}
+              />
+            )
+          })
+        }
+      </div>
+    </div>
+    {
+      ENABLED && (
+        <>
+          <SectionDivider />
+          <div class="py-8 pb-10 px-6 max-md:px-6">
+            <div class="px-2 max-md:px-0">
+              <h2 class="text-2xl sm:text-3xl">{t('home.spotlightTitle')}</h2>
+              <p class="text-muted-foreground mb-6 mt-1">{t('home.spotlightDesc')}</p>
+            </div>
+            <WordHeatmap wordByDate={Object.fromEntries(wordByDate)} lang={lang} tooltipEnabled={TOOLTIP_ENABLED} client:load transition:animate="none" />
+          </div>
+        </>
+      )
+    }
+    {
+      SKILLS_ENABLED && SKILLS_DATA.length > 0 && (
+        <>
+          <SectionDivider />
+          <div class="py-8 pb-10 px-6 max-md:px-6">
+            <div class="px-2 max-md:px-0">
+              <h2 class="text-2xl sm:text-3xl tracking-tight">{t('home.skillsTitle')}</h2>
+              <p class="text-muted-foreground mb-6 mt-1">{t('home.skillsDesc')}</p>
+            </div>
+            <SkillsShowcase skillsData={SKILLS_DATA} />
+          </div>
+        </>
+      )
+    }
+    <SectionDivider />
+    <div class="py-8 pb-10 px-6 sm:px-8">
+      <h2 class="text-2xl sm:text-3xl tracking-tight">{t('posts.title')}</h2>
+      <p class="text-muted-foreground mb-6 mt-1">
+        <a class="hover:underline underline-offset-4" href={postsHref}>
+          {hasPinnedPosts ? t('home.viewPinnedPrefix') : t('home.viewLatestPrefix')}
+          {showPosts.length}
+          {t('home.viewPostsSuffix')}
+        </a>
+      </p>
+      <List posts={showPosts} {type} coverLayout={POSTS_CONFIG.homePageConfig?.coverLayout} />
+    </div>
+  </div>
+</Layout>

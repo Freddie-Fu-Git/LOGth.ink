@@ -1,0 +1,78 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import LqipImage from '~/components/base/LqipImage.astro'
+import { useTranslations, getLangFromUrl } from '~/i18n/utils'
+
+interface Props {
+  project: CollectionEntry<'steamProjects'>
+  class?: string
+  style?: string
+}
+
+const { project, class: className, style }: Props = Astro.props
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
+
+const IMAGE_WIDTH = 1200
+const IMAGE_HEIGHT = 630
+
+const cover = project.data.cover
+const isRemoteCover = typeof cover === 'string'
+---
+
+<article
+  class:list={[
+    'group w-full flex flex-col sm:items-stretch gap-6 sm:gap-10 sm:flex-row-reverse p-4 sm:p-6 rounded-2xl border border-border/50 bg-muted/30 hover:bg-muted/50 transition-all duration-300 overflow-hidden',
+    className,
+  ]}
+  {style}
+>
+  <div class="sm:w-2/6 min-[var(--layout-change-width)]:w-2/8 flex flex-col overflow-hidden">
+    <a href={project.data.steamUrl} target="_blank" rel="noopener noreferrer" class="block relative">
+      <div class="aspect-[1200/630] overflow-hidden bg-muted/30 relative">
+        {
+          isRemoteCover ? (
+            <img
+              src={cover}
+              alt={project.data.name}
+              width={IMAGE_WIDTH}
+              height={IMAGE_HEIGHT}
+              loading="lazy"
+              decoding="async"
+              class="w-full h-full object-cover"
+            />
+          ) : (
+            <LqipImage
+              src={cover}
+              alt={project.data.name}
+              width={IMAGE_WIDTH}
+              height={IMAGE_HEIGHT}
+              loading="lazy"
+              decoding="async"
+              format="webp"
+              class="w-full h-full object-cover"
+            />
+          )
+        }
+      </div>
+    </a>
+  </div>
+
+  <div class="w-full sm:w-4/6 min-[var(--layout-change-width)]:w-6/8 flex flex-col">
+    <a href={project.data.steamUrl} target="_blank" rel="noopener noreferrer" class="group/title">
+      <div class="text-base font-semibold transition-colors group-hover/title:text-primary line-clamp-2 leading-5 mb-1">
+        {project.data.name}
+      </div>
+      <p class="text-sm text-muted-foreground/80 line-clamp-3 leading-5 mb-3">{project.data.description}</p>
+    </a>
+    <a
+      href={project.data.steamUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="mt-4 sm:mt-auto inline-flex items-center gap-2 text-sm font-medium text-foreground/60 hover:text-primary transition-colors group/read"
+    >
+      {t('projects.viewOnSteam')}
+      <span class="icon-[ph--arrow-right] size-4 transition-transform group-hover/read:translate-x-1"></span>
+    </a>
+  </div>
+</article>

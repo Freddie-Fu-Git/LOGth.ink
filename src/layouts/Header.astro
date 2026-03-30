@@ -1,0 +1,59 @@
+---
+import { HEADER_LINKS } from '~/config'
+import ThemeToggle from '~/components/theme/ThemeToggle'
+import HeaderGradient from '~/components/theme/HeaderGradient.astro'
+import SectionDivider from '~/components/base/SectionDivider.astro'
+import HeaderLink from '~/components/base/HeaderLink.astro'
+import SearchSwitch from '~/components/base/SearchSwitch.astro'
+import LanguageToggle from '~/components/theme/LanguageToggle'
+import { Image } from 'astro:assets'
+import avatarLight from '../../public/avatar.light.svg'
+import avatarDark from '../../public/avatar.dark.svg'
+import { getLangFromUrl, useTranslations, useTranslatedPath } from '~/i18n/utils'
+
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
+const translatePath = useTranslatedPath(lang)
+---
+
+<HeaderGradient />
+<header>
+  <div class="mx-auto global-layout-width flex justify-between px-6 sm:px-8 py-4 lg:px-8">
+    <div class="flex gap-3 sm:gap-6 items-center flex-shrink-0">
+      <a href={translatePath('/')} class="pointer-events-auto select-none" transition:persist>
+        <Image src={avatarLight} width={1000} height={1000} alt="Logo" class="w-8 h-8 dark:hidden" densities={[1, 2]} loading="eager" />
+        <Image src={avatarDark} width={1000} height={1000} alt="Logo" class="w-8 h-8 hidden dark:block" densities={[1, 2]} loading="eager" />
+      </a>
+      <div class="flex gap-1">
+        {
+          HEADER_LINKS.map((link) => (
+            <HeaderLink href={translatePath(link.url)} background>
+              {t(`nav.${link.name.toLowerCase()}` as any)}
+            </HeaderLink>
+          ))
+        }
+      </div>
+    </div>
+    <div class="flex gap-2 items-center" transition:persist="header-theme-toggle">
+      <SearchSwitch />
+      <LanguageToggle client:load />
+      <a
+        href="/atom.xml"
+        target="_blank"
+        class="inline-flex items-center hover:scale-105 size-5 origin-center"
+        aria-label="RSS Feed"
+      >
+        <span class="icon-[material-symbols--rss-feed-rounded] size-5"></span>
+      </a>
+      <ThemeToggle client:load />
+    </div>
+  </div>
+  <div class="relative global-layout-width mx-auto pointer-events-none">
+    <div aria-hidden="true" class="absolute inset-x-0 -top-14 bottom-0 mx-auto global-layout-width">
+      <div class="to-(--color-border)/50 absolute bottom-0 left-0 top-0 w-px bg-gradient-to-b from-transparent to-75%"></div>
+      <div class="to-(--color-border)/50 absolute bottom-0 right-0 top-0 w-px bg-gradient-to-b from-transparent to-75%"></div>
+    </div>
+  </div>
+</header>
+
+<SectionDivider className="border-t-border dark:border-t-border/50" />

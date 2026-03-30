@@ -1,0 +1,115 @@
+---
+import Layout from '~/layouts/Layout.astro'
+import NumberTicker from '~/components/base/NumberTicker'
+import { Image } from 'astro:assets'
+import { getAllProjects, getAllSteamProjects } from '~/lib/data'
+import PageTitle from '~/components/base/PageTitle.astro'
+import { useTranslations } from '~/i18n/utils'
+import SteamProjectCard from '~/components/projects/SteamProjectCard.astro'
+
+interface Props {
+  lang: 'en' | 'zh-cn'
+}
+
+const { lang } = Astro.props
+const t = useTranslations(lang)
+
+const title = t('projects.title')
+const description = t('projects.description')
+const introduce = t('projects.introduce')
+const projects = await getAllProjects(lang)
+const steamProjects = await getAllSteamProjects(lang)
+---
+
+<Layout {title} {description}>
+  <div class="relative z-[1] py-8 pb-10 px-6 sm:px-8">
+    <PageTitle {title} {introduce} />
+    <div class="mt-12 w-full space-y-4 fade-up">
+      {
+        projects.map((project, index) => (
+          <div
+            class="group relative flex flex-col w-full p-4 sm:p-6 rounded-2xl border border-border/50 bg-muted/30 hover:bg-muted/50 transition-all duration-300 overflow-hidden"
+            style={`animation-delay: ${index * 100}ms`}
+          >
+            {/* 背景装饰 */}
+            <div class="absolute -right-4 -top-4 w-32 h-32 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors" />
+
+            <div class="flex items-start justify-between mb-4 relative z-10">
+              <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-background border border-border/50 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform duration-300">
+                  {project.data.icon ? (
+                    <Image
+                      src={project.data.icon}
+                      alt={project.data.name}
+                      width={100}
+                      height={100}
+                      class="w-8 h-8 rounded-lg object-cover"
+                    />
+                  ) : (
+                    <span class="icon-[ph--rocket-duotone] w-6 h-6 text-primary" />
+                  )}
+                </div>
+                <div>
+                  <h3 class="text-lg font-semibold tracking-tight">{project.data.name}</h3>
+                  <div class="flex items-center gap-2 mt-0.5">
+                    <span class="flex items-center gap-1 text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-primary/10 text-primary uppercase tracking-wider">
+                      {project.data.type}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="flex gap-2">
+                {project.data.githubUrl && (
+                  <a
+                    href={project.data.githubUrl}
+                    target="_blank"
+                    class="p-2 rounded-lg hover:bg-background border border-transparent hover:border-border/50 transition-all text-muted-foreground hover:text-foreground"
+                    title="View Source"
+                  >
+                    <span class="icon-[ph--github-logo] w-5 h-5" />
+                  </a>
+                )}
+                {project.data.website && (
+                  <a
+                    href={project.data.website}
+                    target="_blank"
+                    class="p-2 rounded-lg hover:bg-background border border-transparent hover:border-border/50 transition-all text-muted-foreground hover:text-foreground"
+                    title="Live Demo"
+                  >
+                    <span class="icon-[ph--arrow-square-out] w-5 h-5" />
+                  </a>
+                )}
+              </div>
+            </div>
+
+            <p class="text-sm text-muted-foreground line-clamp-2 mb-6 flex-grow leading-relaxed relative z-10">
+              {project.data.description}
+            </p>
+
+            <div class="flex items-center gap-4 pt-4 border-t border-border/30 relative z-10">
+              <div class="flex items-center gap-1.5 text-xs font-medium text-muted-foreground/70">
+                <span class="icon-[ph--star-duotone] w-4 h-4 text-yellow-500/80" />
+                <NumberTicker value={project.data.star} client:load className="text-foreground/80" />
+              </div>
+              <div class="flex items-center gap-1.5 text-xs font-medium text-muted-foreground/70">
+                <span class="icon-[ph--git-fork-duotone] w-4 h-4 text-blue-500/80" />
+                <NumberTicker value={project.data.fork} client:load className="text-foreground/80" />
+              </div>
+              {/* project.data.pubDate does not exist in schema, so I remove it */}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    {
+      steamProjects.length > 0 && (
+        <div class="mt-4 space-y-4">
+          {steamProjects.map((project, index) => (
+            <SteamProjectCard project={project} class="fade-up" style={`animation-delay: ${index * 100}ms`} />
+          ))}
+        </div>
+      )
+    }
+  </div>
+</Layout>
