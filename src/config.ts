@@ -70,6 +70,11 @@ export const SOCIAL_LINKS: SocialLink[] = [
     icon: 'icon-[material-symbols--alternate-email-rounded]',
   },
   {
+    name: 'Bonjour!',
+    url: 'https://bonjour.bio/freddiefu',
+    icon: '/icons/bonjour.svg',
+  },
+  {
     name: 'Steam',
     url: 'https://steamcommunity.com/id/freddie_fu/',
     icon: 'icon-[mdi--steam]',

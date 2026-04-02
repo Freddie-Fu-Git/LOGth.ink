@@ -13,6 +13,8 @@ const { label, icon, count, class: className, ...props }: Props = Astro.props
 const href = props.href as string
 const isGithub = href?.includes('github.com')
 const githubUser = isGithub ? href.split('/').filter(Boolean).pop() : undefined
+const isIconifyIcon = icon?.startsWith('icon-[')
+const isSvg = icon?.toLowerCase().endsWith('.svg')
 ---
 
 <a
@@ -24,9 +26,36 @@ const githubUser = isGithub ? href.split('/').filter(Boolean).pop() : undefined
   {...props}
   target="_blank"
 >
-  <span
-    class={cn('h-6 w-6 text-muted-foreground transition-all duration-300 ease-out', 'group-hover:text-primary group-hover:rotate-6', icon)}
-  ></span>
+  {
+    isIconifyIcon ? (
+      <span
+        class={cn(
+          'h-6 w-6 text-muted-foreground transition-all duration-300 ease-out',
+          'group-hover:text-primary group-hover:rotate-6',
+          icon
+        )}
+      ></span>
+    ) : isSvg ? (
+      <span
+        class={cn(
+          'h-6 w-6 bg-current text-muted-foreground transition-all duration-300 ease-out',
+          'group-hover:text-primary group-hover:rotate-6'
+        )}
+        style={`-webkit-mask: url('${icon}') no-repeat center / contain; mask: url('${icon}') no-repeat center / contain;`}
+      ></span>
+    ) : (
+      <img
+        src={icon}
+        alt=""
+        class={cn(
+          'h-6 w-6 object-contain text-muted-foreground transition-all duration-300 ease-out',
+          'group-hover:text-primary group-hover:rotate-6'
+        )}
+        loading="lazy"
+        decoding="async"
+      />
+    )
+  }
   {
     count !== undefined && (
       <span class="text-muted-foreground text-sm transition-colors duration-300 group-hover:text-primary">
