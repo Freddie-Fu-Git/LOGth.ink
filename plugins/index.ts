@@ -33,9 +33,14 @@ export const remarkPlugins = [
       link: {
         // faviconSourceUrl: 'https://icon.horse/icon/{domain}',// 1000/month 国内建议使用
         faviconSourceUrl: 'https://www.google.com/s2/favicons?domain={domain}&sz=128', // recommended ✨
-        imgProps: () => {
+        imgProps: (node) => {
           const props: ReturnType<PropertiesFromTextDirective> = {
             'aria-hidden': 'true',
+          }
+
+          const img = node.attributes?.img
+          if (typeof img === 'string' && img.toLowerCase().includes('.svg')) {
+            props['data-rds-img'] = 'svg'
           }
           return props
         },

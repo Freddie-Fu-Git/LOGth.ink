@@ -778,6 +778,12 @@ image-figure-polaroid {
   margin-block-end: 0.1em;
 }
 
+.dark .markdown :is([data-link='github-acct'], [data-link='github-repo'], [data-link='custom-url'], [data-link='npm-pkg']) > img[data-rds-img='svg'],
+.dark .markdown :is([data-link='github-acct'], [data-link='github-repo'], [data-link='custom-url'], [data-link='npm-pkg']) > img[src$='.svg'],
+.dark .markdown :is([data-link='github-acct'], [data-link='github-repo'], [data-link='custom-url'], [data-link='npm-pkg']) > img[src*='.svg?'] {
+  filter: invert(1) brightness(1.2) !important;
+}
+
 /* ===== 视频样式 ===== */
 .rds-video {
   z-index: 150;
