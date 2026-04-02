@@ -33,7 +33,7 @@ export const remarkPlugins = [
       link: {
         // faviconSourceUrl: 'https://icon.horse/icon/{domain}',// 1000/month 国内建议使用
         faviconSourceUrl: 'https://www.google.com/s2/favicons?domain={domain}&sz=128', // recommended ✨
-        imgProps: (node) => {
+        imgProps: (node: Parameters<PropertiesFromTextDirective>[0]) => {
           const props: ReturnType<PropertiesFromTextDirective> = {
             'aria-hidden': 'true',
           }
