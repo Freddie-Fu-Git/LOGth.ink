@@ -2,12 +2,13 @@
 interface Props {
   id: string
   title: string
+  lang: string
 }
 
-const { id, title } = Astro.props
+const { id, title, lang } = Astro.props
 ---
 
-<div id="artalk-container" data-id={id} data-title={title}></div>
+<div id="artalk-container" data-id={id} data-title={title} data-lang={lang}></div>
 
 <script>
   import Artalk from 'artalk'
@@ -29,6 +30,8 @@ const { id, title } = Astro.props
 
     const id = container.dataset.id || ''
     const title = container.dataset.title || ''
+    const pageLang = (container.dataset.lang || 'en').toLowerCase()
+    const locale = pageLang === 'zh-cn' ? 'zh-CN' : pageLang === 'en' ? 'en' : pageLang
 
     artalkInstance = Artalk.init({
       el: '#artalk-container',
@@ -36,6 +39,7 @@ const { id, title } = Astro.props
       pageTitle: title,
       server: artalk.server,
       site: artalk.site,
+      locale,
       darkMode: document.documentElement.classList.contains('dark'),
     })
 
