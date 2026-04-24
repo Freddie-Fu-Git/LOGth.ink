@@ -34,51 +34,38 @@
 
 /* ===== 字体配置 ===== */
 @layer base {
-  /* Geist 字体 */
+  /* JetBrains Maple Mono 字体 */
   @font-face {
-    font-family: 'Geist';
-    src: url('/fonts/GeistVF.woff2') format('woff2');
-    font-display: swap;
-  }
-
-  @font-face {
-    font-family: 'Maple Mono';
-    src: url('https://cdn.jsdelivr.net/fontsource/fonts/maple-mono@latest/latin-400-normal.woff2') format('woff2');
+    font-family: 'JetBrains Maple Mono';
+    src: url('https://fonts.zeoseven.com/items/521/JetBrainsMapleMono-Regular.woff2') format('woff2');
     font-display: swap;
     font-style: normal;
     font-weight: 400;
   }
 
   @font-face {
-    font-family: 'Maple Mono';
-    src: url('https://cdn.jsdelivr.net/fontsource/fonts/maple-mono@latest/latin-700-normal.woff2') format('woff2');
+    font-family: 'JetBrains Maple Mono';
+    src: url('https://fonts.zeoseven.com/items/521/JetBrainsMapleMono-Bold.woff2') format('woff2');
     font-display: swap;
     font-style: normal;
     font-weight: 700;
   }
+}
 
-  /* 标题字体 */
-  @font-face {
-    font-family: 'Lexend';
-    src: url('/fonts/Lexend-VariableFont_wght.woff2') format('woff2');
-    font-display: swap;
-  }
-
-  /* 等宽字体 */
-  @font-face {
-    font-family: 'GeistMono';
-    src: url('/fonts/GeistMono.woff2') format('woff2');
-    font-display: swap;
-  }
+/* ===== 字体加载优化 ===== */
+/* 关键字体预加载 */
+@layer base {
+  /* 仅预加载主要字体，减少初始加载时间 */
+  /* 预加载逻辑在 HTML 头部通过 link rel="preload" 实现 */
 }
 
 /* ===== 颜色变量 ===== */
 @layer base {
   :root {
     /* 字体族 */
-    --font-lexend: 'Lexend', 'Geist', ui-sans-serif, system-ui, sans-serif;
-    --font-sans: 'Geist', ui-sans-serif, system-ui, sans-serif;
-    --font-geist-mono: 'GeistMono', 'Input Mono', 'Fira Code', monospace;
+    --font-lexend: 'JetBrains Maple Mono', ui-sans-serif, system-ui, sans-serif;
+    --font-sans: 'JetBrains Maple Mono', ui-sans-serif, system-ui, sans-serif;
+    --font-geist-mono: 'JetBrains Maple Mono', monospace;
 
     /* 基础色调 */
     --background: 255 100% 100%;
@@ -146,14 +133,14 @@
   }
 
   html[lang='zh-cn'] {
-    --font-lexend: 'Maple Mono', 'LXGW WenKai', 'Geist', ui-sans-serif, system-ui, sans-serif;
-    --font-sans: 'Maple Mono', 'LXGW WenKai', 'Geist', ui-sans-serif, system-ui, sans-serif;
+    --font-lexend: 'JetBrains Maple Mono', ui-sans-serif, system-ui, sans-serif;
+    --font-sans: 'JetBrains Maple Mono', ui-sans-serif, system-ui, sans-serif;
   }
 
   html[lang='en'] {
-    --font-lexend: 'Maple Mono', 'Geist', ui-sans-serif, system-ui, sans-serif;
-    --font-sans: 'Maple Mono', 'Geist', ui-sans-serif, system-ui, sans-serif;
-    --font-geist-mono: 'Maple Mono', 'GeistMono', 'Input Mono', 'Fira Code', monospace;
+    --font-lexend: 'JetBrains Maple Mono', ui-sans-serif, system-ui, sans-serif;
+    --font-sans: 'JetBrains Maple Mono', ui-sans-serif, system-ui, sans-serif;
+    --font-geist-mono: 'JetBrains Maple Mono', monospace;
   }
 }
 
