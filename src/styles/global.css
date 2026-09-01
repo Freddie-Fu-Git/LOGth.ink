@@ -32,33 +32,6 @@
   --color-scrollbar-bg: hsl(var(--scrollbar-bg));
 }
 
-/* ===== 字体配置 ===== */
-@layer base {
-  /* JetBrains Maple Mono 字体 */
-  @font-face {
-    font-family: 'JetBrains Maple Mono';
-    src: url('https://fonts.zeoseven.com/items/521/JetBrainsMapleMono-Regular.woff2') format('woff2');
-    font-display: swap;
-    font-style: normal;
-    font-weight: 400;
-  }
-
-  @font-face {
-    font-family: 'JetBrains Maple Mono';
-    src: url('https://fonts.zeoseven.com/items/521/JetBrainsMapleMono-Bold.woff2') format('woff2');
-    font-display: swap;
-    font-style: normal;
-    font-weight: 700;
-  }
-}
-
-/* ===== 字体加载优化 ===== */
-/* 关键字体预加载 */
-@layer base {
-  /* 仅预加载主要字体，减少初始加载时间 */
-  /* 预加载逻辑在 HTML 头部通过 link rel="preload" 实现 */
-}
-
 /* ===== 颜色变量 ===== */
 @layer base {
   :root {

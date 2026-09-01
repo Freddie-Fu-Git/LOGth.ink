@@ -44,12 +44,10 @@ const ogImage = new URL(image || SITE.ogImage, Astro.url)
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lxgw-wenkai-web/1.511.0/style.min.css" />
 
-<!-- 预加载 -->
-<!-- 仅预加载最关键的字体，减少初始加载时间 -->
-<link rel="preload" href="https://fonts.zeoseven.com/items/521/JetBrainsMapleMono-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
-
-<!-- 其他字体按需加载 -->
-<link rel="prefetch" href="https://fonts.zeoseven.com/items/521/JetBrainsMapleMono-Bold.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+<!-- JetBrains Maple Mono：通过 ZSFT FontsAPI 加载字形子集 -->
+<link rel="preconnect" href="https://fontsapi.zeoseven.com" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://fontsapi.zeoseven.com/521/main/result.css" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://fontsapi.zeoseven.com/521/bold/result.css" crossorigin="anonymous" />
 
 <!-- 标准链接  Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
