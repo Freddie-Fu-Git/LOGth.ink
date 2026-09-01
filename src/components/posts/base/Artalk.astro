@@ -28,6 +28,10 @@ const { id, title, lang } = Astro.props
     const container = document.getElementById('artalk-container')
     if (!container) return
 
+    // Artalk 2.10 does not remove previously rendered markup on destroy.
+    // Always initialize into a clean container to avoid duplicate editors.
+    container.replaceChildren()
+
     const id = container.dataset.id || ''
     const title = container.dataset.title || ''
     const pageLang = (container.dataset.lang || 'en').toLowerCase()
@@ -80,7 +84,7 @@ const { id, title, lang } = Astro.props
         entries.forEach((entry) => {
           if (entry.isIntersecting && !isInitialized) {
             initArtalk()
-            cleanup()
+            disconnectObserver()
           }
         })
       },
@@ -93,30 +97,31 @@ const { id, title, lang } = Astro.props
     observer.observe(container)
   }
 
-  function cleanup() {
+  function disconnectObserver() {
     if (observer) {
       observer.disconnect()
       observer = null
     }
+  }
+
+  function cleanup() {
+    disconnectObserver()
+
     if (artalkInstance) {
       artalkInstance.destroy()
       artalkInstance = null
     }
+
+    document.getElementById('artalk-container')?.replaceChildren()
+    isInitialized = false
   }
 
   function resetAndInitialize() {
-    isInitialized = false
     cleanup()
     setupObserver()
   }
 
-  // Initial setup
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', setupObserver)
-  } else {
-    setupObserver()
-  }
-
+  // astro:page-load fires on both the initial load and client-side navigations.
   document.addEventListener('astro:page-load', resetAndInitialize)
   document.addEventListener('astro:before-preparation', cleanup)
   window.addEventListener('beforeunload', cleanup)
