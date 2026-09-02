@@ -173,9 +173,9 @@ export const SKILLSSHOWCASE_CONFIG: SkillsShowcaseConfig = {
           url: 'https://www.raspberrypi.org/',
         },
         {
-          name: 'OpenClaw',
-          icon: 'https://unpkg.com/@lobehub/icons-static-svg@latest/icons/openclaw-color.svg',
-          url: 'https://github.com/openclaw/openclaw',
+          name: 'Hermes',
+          icon: 'https://unpkg.com/@lobehub/icons-static-svg@latest/icons/hermesagent.svg',
+          url: 'https://github.com/NousResearch/hermes-agent',
         },
         {
           name: 'GitHub',
@@ -193,9 +193,9 @@ export const SKILLSSHOWCASE_CONFIG: SkillsShowcaseConfig = {
           url: 'https://www.trae.ai/',
         },
         {
-          name: 'OpenCode',
-          icon: 'https://unpkg.com/@lobehub/icons-static-svg@latest/icons/opencode.svg',
-          url: 'https://opencode.ai/',
+          name: 'Codex',
+          icon: 'https://unpkg.com/@lobehub/icons-static-svg@latest/icons/codex-color.svg',
+          url: 'https://developers.openai.com/codex',
         },
         {
           name: 'Obsidian',

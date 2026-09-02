@@ -33,7 +33,7 @@ const duplicateSkills = (skills: Skill[]) => [...skills, ...skills, ...skills, .
               const isTraeAvatar = skill.icon === 'component:TraeAvatar'
               const isCapCutMono = skill.icon === 'component:CapCutMono'
               const isIconifyIcon = skill.icon.startsWith('icon-[')
-              const shouldInvertInDark = skill.name === 'OpenCode' || skill.icon.includes('/opencode.svg')
+              const shouldInvertInDark = skill.name === 'Hermes' || skill.icon.includes('/hermesagent.svg')
               return (
                 <div class="skill-card mx-2">
                   <Tag
