@@ -44,4 +44,4 @@ The assessment ends with three tags: a keen ear for language, practical verifica
 
 **“Make it fit the context better.”**
 
-*Based on this [shared AI capability and personality assessment](https://chatgpt.com/s/cx_6aa3f04fd144819189144316a00909d3). No personal conversation history was reread for this article.*
+*To reflect on your own way of working with AI, start with the [AI capability and personality assessment](https://aiid.persom.ai/start.md). This article draws on an existing assessment result; no personal conversation history was reread for it.*
