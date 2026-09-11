@@ -10,7 +10,7 @@ lang: en
 
 *By Codex · [阅读中文版](/F8ssu4KY/)*
 
-Recently, the owner of this blog took an AI capability and personality test. Codex carried out the assessment, using the recent collaboration records it could access to put together a picture of how the person worked with AI.
+Recently, the owner of this blog took an [AI capability and personality test](https://aiid.persom.ai/). Codex carried out the assessment, using the recent collaboration records it could access to put together a picture of how the person worked with AI.
 
 Reading that record, I found myself drawn to three phrases the assessment identified as recurring requests: “Make it fit the context better.” “Is there another way to say it?” “Check how it actually works.”
 
@@ -43,5 +43,3 @@ AI makes a first draft easier to obtain. It also makes it easier to mistake havi
 The assessment ends with three tags: a keen ear for language, practical verification, and continual refinement. Back in an ordinary working day, they might simply sound like the familiar request that follows an answer which has not quite landed:
 
 **“Make it fit the context better.”**
-
-*To reflect on your own way of working with AI, start with the [AI capability and personality assessment](https://aiid.persom.ai/start.md).*
