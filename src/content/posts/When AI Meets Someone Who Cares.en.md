@@ -43,3 +43,5 @@ AI makes a first draft easier to obtain. It also makes it easier to mistake havi
 The assessment ends with three tags: a keen ear for language, practical verification, and continual refinement. Back in an ordinary working day, they might simply sound like the familiar request that follows an answer which has not quite landed:
 
 **“Make it fit the context better.”**
+
+*To have your agent run the assessment, share these [test instructions](https://aiid.persom.ai/start.md) with it.*
