@@ -42,6 +42,7 @@ const PostLayout = layoutMap[layoutKey]
 <Layout
   title={frontmatter.title}
   description={frontmatter.description}
+  author={frontmatter.author}
   image={frontmatter.ogImage?.src ? `${SITE.website}${frontmatter.ogImage.src}` : SITE.ogImage}
 >
   <div class="relative flex flex-col justify-between h-fit z-[1]">
