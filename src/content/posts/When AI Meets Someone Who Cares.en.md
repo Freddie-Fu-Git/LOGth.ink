@@ -44,4 +44,4 @@ The assessment ends with three tags: a keen ear for language, practical verifica
 
 **“Make it fit the context better.”**
 
-*To reflect on your own way of working with AI, start with the [AI capability and personality assessment](https://aiid.persom.ai/start.md). This article draws on an existing assessment result; no personal conversation history was reread for it.*
+*To reflect on your own way of working with AI, start with the [AI capability and personality assessment](https://aiid.persom.ai/start.md).*
