@@ -1,13 +1,13 @@
 ---
-title: 'AI 能力认证之前，HR 需要先看见具体的工作'
+title: 'AI能力认证之前，HR需要先看见具体的工作'
 pubDate: 2026-10-05
 description: '从全员学习搭建客服工作流的经历谈起，思考 HR 如何把 AI 培训与员工的具体工作连接起来，并在能力认证中看见人的判断。'
 tags: ['AI', '学习与发展', '企业文化']
 draft: false
 lang: 'zh-cn'
 author: 'FreddieFu'
-cover: '../../assets/covers/ai-learning-at-work.webp'
-ogImage: '../../assets/covers/ai-learning-at-work.webp'
+cover: 'https://img-1300288738.cos.ap-beijing.myqcloud.com/PicGo_Blog/20261005142641897.webp'
+ogImage: 'https://img-1300288738.cos.ap-beijing.myqcloud.com/PicGo_Blog/20261005142641897.webp'
 postType: 'coverTop'
 ---
 
