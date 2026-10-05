@@ -22,13 +22,8 @@ export async function getAllPosts(lang?: string): Promise<CollectionEntry<'posts
 
 // 获取所有置顶文章
 export async function getPinnedPosts(lang?: string): Promise<CollectionEntry<'posts'>[]> {
-  const allPosts = await getCollection('posts')
-  const pinnedPosts = allPosts.filter((post) => {
-    const isPinned = post.data.pinned
-    const matchesLang = !lang || post.data.lang === lang
-    return isPinned && matchesLang
-  })
-  return postsSort(pinnedPosts)
+  const allPosts = await getAllPosts(lang)
+  return allPosts.filter((post) => post.data.pinned)
 }
 
 // 获取最新的固定数量的文章

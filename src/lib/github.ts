@@ -15,7 +15,7 @@ async function fetchWithCache<T>(key: string, fetcher: () => Promise<T>, fallbac
       if (Date.now() - entry.timestamp < CACHE_DURATION) {
         return entry.data
       }
-      if (!fallbackValue) fallbackValue = entry.data
+      if (fallbackValue === undefined) fallbackValue = entry.data
     }
   } catch (e) {
     console.warn('Error reading from localStorage', e)
@@ -23,7 +23,11 @@ async function fetchWithCache<T>(key: string, fetcher: () => Promise<T>, fallbac
 
   try {
     const data = await fetcher()
-    localStorage.setItem(cacheKey, JSON.stringify({ data, timestamp: Date.now() }))
+    try {
+      localStorage.setItem(cacheKey, JSON.stringify({ data, timestamp: Date.now() }))
+    } catch (error) {
+      console.warn('Error writing to localStorage', error)
+    }
     return data
   } catch (error) {
     console.warn(`Failed to fetch GitHub data for ${key}:`, error)

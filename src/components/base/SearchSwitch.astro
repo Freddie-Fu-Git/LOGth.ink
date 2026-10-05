@@ -43,7 +43,10 @@ const translations = {
   </div>
 </div>
 
-<script define:vars={{ translations }}>
+<script is:inline define:vars={{ translations }}>
+  (() => {
+  const controller = new AbortController()
+  const listenerOptions = { signal: controller.signal }
   const searchInput = document.getElementById('search-input')
   const searchMask = document.getElementById('search-mask')
   const searchSwitch = document.getElementById('search-switch')
@@ -52,6 +55,7 @@ const translations = {
 
   // 并发控制：用于丢弃过期的搜索结果
   let searchReqId = 0
+  let closeTimer
 
   // 精确模式状态（持久化）
   let exactMode = false
@@ -76,11 +80,12 @@ const translations = {
       if (searchInput instanceof HTMLInputElement) {
         searchInput.dispatchEvent(new Event('input'))
       }
-    })
+    }, listenerOptions)
   }
 
   // 打开搜索面板
   const openSearch = () => {
+    clearTimeout(closeTimer)
     searchMask?.classList.remove('hidden')
     searchMask?.offsetHeight
     searchMask?.classList.remove('opacity-0')
@@ -90,15 +95,19 @@ const translations = {
 
   // 关闭搜索面板
   const closeSearch = () => {
+    ++searchReqId
+    clearTimeout(closeTimer)
     searchMask?.classList.add('opacity-0')
     if (searchInput instanceof HTMLInputElement) searchInput.value = ''
     if (searchResults) searchResults.innerHTML = ''
-    setTimeout(() => {
+    closeTimer = setTimeout(() => {
       searchMask?.classList.add('hidden')
     }, 200)
   }
 
   const closeSearchIn = () => {
+    ++searchReqId
+    clearTimeout(closeTimer)
     searchMask?.classList.add('opacity-0')
     if (searchInput instanceof HTMLInputElement) searchInput.value = ''
     if (searchResults) searchResults.innerHTML = ''
@@ -106,12 +115,12 @@ const translations = {
   }
 
   // 点击开关
-  searchSwitch?.addEventListener('click', openSearch)
+  searchSwitch?.addEventListener('click', openSearch, listenerOptions)
 
   // 点击遮罩层关闭
   searchMask?.addEventListener('click', (e) => {
     if (e.target === searchMask) closeSearch()
-  })
+  }, listenerOptions)
 
   // 快捷键支持
   document.addEventListener('keydown', (e) => {
@@ -126,7 +135,7 @@ const translations = {
         closeSearch()
       }
     }
-  })
+  }, listenerOptions)
 
   // input event
   const handleInput = async (e) => {
@@ -174,9 +183,11 @@ const translations = {
         return
       }
 
+      const fragment = document.createDocumentFragment()
       if(search?.results){
         for (const result of search?.results) {
         const data = await result.data()
+        if (reqId !== searchReqId || controller.signal.aborted) return
         // 显示主结果
         const resultItem = document.createElement('a')
         resultItem.href = data.url
@@ -186,7 +197,7 @@ const translations = {
           <div class="search-results-excerpt">${data.excerpt}</div>
         `
         resultItem.addEventListener('click', closeSearchIn)
-        searchResults?.appendChild(resultItem)
+        fragment.appendChild(resultItem)
 
         // 显示子结果（如果有）
         if (data.sub_results) {
@@ -205,10 +216,13 @@ const translations = {
               <div class="search-results-excerpt text-xs">${subResult.excerpt}</div>
             `
             subItem.addEventListener('click', closeSearchIn)
-            searchResults?.appendChild(subItem)
+            fragment.appendChild(subItem)
           }
         }
       }
+      }
+      if (reqId === searchReqId && !controller.signal.aborted) {
+        searchResults?.replaceChildren(fragment)
       }
     } else {
       const noResults = document.createElement('div')
@@ -223,7 +237,13 @@ const translations = {
     }
   }
 
-  searchInput?.addEventListener('input', handleInput)
+  searchInput?.addEventListener('input', handleInput, listenerOptions)
+  document.addEventListener('astro:before-swap', () => {
+    ++searchReqId
+    clearTimeout(closeTimer)
+    controller.abort()
+  }, { once: true, signal: controller.signal })
+  })()
 </script>
 
 {import.meta.env.PROD &&

@@ -31,10 +31,14 @@ const circumference = 2 * Math.PI * radius
 </div>
 
 <script>
+  let cleanup: (() => void) | undefined
+
   /**
    * 简单进度圆环
    */
   function setupSimpleProgressRing() {
+    cleanup?.()
+    cleanup = undefined
     const progressRings = document.querySelectorAll('[data-progress-ring]')
 
     if (!progressRings.length) return
@@ -42,7 +46,7 @@ const circumference = 2 * Math.PI * radius
     function updateProgress() {
       const scrollTop = window.scrollY
       const docHeight = document.documentElement.scrollHeight - window.innerHeight
-      const scrollPercent = Math.min(Math.max(scrollTop / docHeight, 0), 1)
+      const scrollPercent = docHeight > 0 ? Math.min(Math.max(scrollTop / docHeight, 0), 1) : 0
 
       progressRings.forEach((ring) => {
         const circumference = 2 * Math.PI * parseFloat(ring.getAttribute('r') || '0')
@@ -51,22 +55,30 @@ const circumference = 2 * Math.PI * radius
       })
     }
 
-    let ticking = false
+    let frameId: number | undefined
     function onScroll() {
-      if (!ticking) {
-        requestAnimationFrame(() => {
+      if (frameId === undefined) {
+        frameId = requestAnimationFrame(() => {
           updateProgress()
-          ticking = false
+          frameId = undefined
         })
-        ticking = true
       }
     }
 
-    window.addEventListener('scroll', onScroll)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
     updateProgress()
 
-    return () => window.removeEventListener('scroll', onScroll)
+    cleanup = () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+      if (frameId !== undefined) cancelAnimationFrame(frameId)
+    }
   }
 
   document.addEventListener('astro:page-load', setupSimpleProgressRing)
+  document.addEventListener('astro:before-swap', () => {
+    cleanup?.()
+    cleanup = undefined
+  })
 </script>

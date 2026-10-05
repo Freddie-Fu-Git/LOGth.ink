@@ -21,8 +21,8 @@ const translatePath = useTranslatedPath(lang)
   <div class="mx-auto global-layout-width flex justify-between px-6 sm:px-8 py-4 lg:px-8">
     <div class="flex gap-3 sm:gap-6 items-center flex-shrink-0">
       <a href={translatePath('/')} class="pointer-events-auto select-none" transition:persist>
-        <Image src={avatarLight} width={1000} height={1000} alt="Logo" class="w-8 h-8 dark:hidden" densities={[1, 2]} loading="eager" />
-        <Image src={avatarDark} width={1000} height={1000} alt="Logo" class="w-8 h-8 hidden dark:block" densities={[1, 2]} loading="eager" />
+        <Image src={avatarLight} width={32} height={32} alt="Logo" class="w-8 h-8 dark:hidden" loading="eager" />
+        <Image src={avatarDark} width={32} height={32} alt="Logo" class="w-8 h-8 hidden dark:block" loading="eager" />
       </a>
       <div class="flex gap-1">
         {
