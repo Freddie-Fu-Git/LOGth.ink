@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# local agent instructions (root only, case-insensitive spelling)
+/[Aa][Gg][Ee][Nn][Tt][Ss].[Mm][Dd]
