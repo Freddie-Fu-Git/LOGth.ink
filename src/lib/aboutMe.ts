@@ -49,7 +49,7 @@ export const aboutMeCareer: Record<AboutMeLang, CareerItem[]> = {
     {
       location: 'Beijing, China',
       date: 'Dec. 2023 — Mar. 2026',
-      role: 'HR (Culture & Training)',
+      role: 'HR (Learning & Development)',
       company: 'BR Group',
       description:
         'Managed language and cross-cultural training for overseas business teams and contributed to training programs for graduate hires and managers.\nOrganized annual employee awards and cultural events and led improvements to employee incentive practices.',
@@ -75,7 +75,7 @@ export const aboutMeCareer: Record<AboutMeLang, CareerItem[]> = {
     {
       location: '中国 · 北京',
       date: '2023.12 — 2026.03',
-      role: 'HR（文化与培训）',
+      role: 'HR（学习与发展）',
       company: '百融云创',
       description:
         '负责出海团队的语言与跨文化培训，参与校招生及管理者培养项目。\n组织年度评优与文化活动，主导员工激励机制的优化。',
