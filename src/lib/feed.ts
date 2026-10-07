@@ -229,7 +229,7 @@ export async function generateRSS20(): Promise<string> {
         (post) => `
     <item>
       <title>${escapeXml(post.data.title)}</title>
-      <link>${siteUrl}/${post.id}</link>
+      <link>${siteUrl}/${post.id}/</link>
       <guid>${siteUrl}/${post.id}</guid>
       <updated>${(post.data.updatedDate || post.data.pubDate).toISOString()}</updated>
       <pubDate>${post.data.pubDate.toISOString()}</pubDate>
@@ -271,7 +271,7 @@ export async function generateAtom10(): Promise<string> {
       (post) => `
   <entry>
     <title>${escapeXml(post.data.title)}</title>
-    <link href="${siteUrl}/${post.id}" rel="alternate" type="text/html"/>
+    <link href="${siteUrl}/${post.id}/" rel="alternate" type="text/html"/>
     <id>${siteUrl}/${post.id}</id>
     <updated>${(post.data.updatedDate || post.data.pubDate).toISOString()}</updated>
     <published>${post.data.pubDate.toISOString()}</published>

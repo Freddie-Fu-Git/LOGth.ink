@@ -11,6 +11,7 @@ import { SITE } from './src/config'
 export default defineConfig({
   site: SITE.website,
   base: SITE.base,
+  trailingSlash: 'always',
   prefetch: {
     prefetchAll: true,
     defaultStrategy: 'viewport',

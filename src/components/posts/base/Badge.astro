@@ -1,5 +1,6 @@
 ---
 import { cn } from '~/lib/utils'
+import { getLangFromUrl, useTranslatedPath } from '~/i18n/utils'
 
 interface Props {
   type: 'tag' | 'recommend'
@@ -36,12 +37,13 @@ const iconConfig = {
 }
 
 const iconClass = iconConfig[type]
+const translatePath = useTranslatedPath(getLangFromUrl(Astro.url))
 ---
 
 {
   type === 'tag' ? (
     <a
-      href={`/tags/${content}`}
+      href={translatePath(`/tags/${content}`)}
       aria-label={`View posts tagged with ${content}`}
       class={cn(
         'inline-flex items-center font-medium  transition-colors duration-200 select-none',
