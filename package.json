@@ -4,6 +4,8 @@
   "version": "1.0.3",
   "license": "MIT",
   "scripts": {
+    "seo:check": "node scripts/check-seo.mjs",
+    "indexnow": "node scripts/indexnow.mjs",
     "dev": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
@@ -11,7 +13,7 @@
     "astro": "astro",
     "format": "prettier . --check --ignore-unknown",
     "format:write": "prettier . --write --ignore-unknown --cache",
-    "postbuild": "pagefind --site dist"
+    "postbuild": "pagefind --site dist && node scripts/check-seo.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^6.0.5",

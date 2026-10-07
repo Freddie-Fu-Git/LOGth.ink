@@ -11,6 +11,7 @@ import { render } from 'astro:content'
 import SectionDivider from '~/components/base/SectionDivider.astro'
 import Comment from '~/components/posts/base/Comment.astro'
 import License from '~/components/posts/base/License.astro'
+import { getImage } from 'astro:assets'
 
 interface Props {
   post: any
@@ -37,13 +38,19 @@ const layoutMap: Record<LayoutKey, any> = {
 
 const layoutKey: LayoutKey = (frontmatter.postType as LayoutKey) || (POSTS_CONFIG.postType as LayoutKey)
 const PostLayout = layoutMap[layoutKey]
+const socialImage = frontmatter.ogImage
+  ? typeof frontmatter.ogImage === 'string'
+    ? frontmatter.ogImage
+    : (await getImage({ src: frontmatter.ogImage, width: 1200 })).src
+  : SITE.ogImage
 ---
 
 <Layout
   title={frontmatter.title}
   description={frontmatter.description}
   author={frontmatter.author}
-  image={frontmatter.ogImage?.src ? `${SITE.website}${frontmatter.ogImage.src}` : SITE.ogImage}
+  image={socialImage}
+  article={{ headline: frontmatter.title, published: frontmatter.pubDate, modified: frontmatter.updatedDate, tags: frontmatter.tags }}
 >
   <div class="relative flex flex-col justify-between h-fit z-[1]">
     <TocMobile {post} {posts} headings={filterHeadings} />

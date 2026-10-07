@@ -14,9 +14,11 @@ type Props = {
   description: string
   image?: string
   author?: string
+  article?: { headline: string; published: Date; modified?: Date; tags?: string[] }
+  noindex?: boolean
 }
 
-const { title, description, image, author }: Props = Astro.props
+const { title, description, image, author, article, noindex }: Props = Astro.props
 const lang = getLangFromUrl(Astro.url)
 const pageTitle = title.trim().length > 0 ? `${title} | ${SITE.title}` : SITE.title
 ---
@@ -24,7 +26,7 @@ const pageTitle = title.trim().length > 0 ? `${title} | ${SITE.title}` : SITE.ti
 <!doctype html>
 <html {lang} transition:name="root" transition:animate={SITE.transition ? 'fade' : 'none'}>
   <head>
-    <Head title={pageTitle} {description} {image} {author} />
+    <Head title={pageTitle} {description} {image} {author} {article} {noindex} />
   </head>
   <body class="flex flex-col">
     <Header />

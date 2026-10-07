@@ -17,8 +17,16 @@ const { page, tag, lang } = Astro.props
 const t = useTranslations(lang)
 const translatePath = useTranslatedPath(lang)
 
-const title = `#${tag}`
-const description = lang === 'en' ? `Posts with the tag #${tag}` : `包含标签 #${tag} 的文章`
+const pageSuffix = page.currentPage > 1 ? (lang === 'en' ? ` — Page ${page.currentPage}` : ` — 第 ${page.currentPage} 页`) : ''
+const title = (lang === 'en' ? `${tag} articles` : `${tag}相关文章`) + pageSuffix
+const articleTitles = page.data
+  .slice(0, 3)
+  .map((post) => post.data.title)
+  .join(lang === 'en' ? '; ' : '、')
+const description =
+  (lang === 'en'
+    ? `Browse articles about ${tag} on LOG & THINK. On this page: ${articleTitles}.`
+    : `浏览 LOG & THINK 中关于${tag}的文章。本页包括：${articleTitles}。`) + pageSuffix
 ---
 
 <Layout {title} {description}>

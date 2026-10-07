@@ -17,8 +17,9 @@ const { page, lang } = Astro.props
 const t = useTranslations(lang)
 const translatePath = useTranslatedPath(lang)
 
-const title = t('posts.title')
-const description = t('posts.description')
+const pageSuffix = page.currentPage > 1 ? (lang === 'en' ? ` — Page ${page.currentPage}` : ` — 第 ${page.currentPage} 页`) : ''
+const title = t('posts.title') + pageSuffix
+const description = t('posts.description') + pageSuffix
 const introduce = t('posts.introduce')
 ---
 
