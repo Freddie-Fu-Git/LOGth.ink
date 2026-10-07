@@ -21,7 +21,7 @@ export const aboutMeProfile: Record<AboutMeLang, AboutMeProfile> = {
     title: 'HR (OC & LD) | Freelance Translator',
     bioLines: [
       'Around five years of experience in organizational culture and learning and development, covering cultural events, employee recognition, and language and cross-cultural training for overseas business teams.',
-      'Freelance translator working on game localization from English to Chinese. Responsibilities include translation, review, terminology research, and localization testing.',
+      'Freelance translator working on game localization from English to Chinese. Responsibilities include translation, review, terminology research, and LQA.',
     ],
     careerSummary: 'Organizational culture, learning and development, and game localization.',
   },
@@ -30,7 +30,7 @@ export const aboutMeProfile: Record<AboutMeLang, AboutMeProfile> = {
     title: 'HR (企业文化&学习与发展) | 游戏本地化译员',
     bioLines: [
       '约五年企业文化与学习发展工作经历，涉及文化活动、员工评优，以及出海团队的语言与跨文化培训。',
-      '游戏本地化译员，负责英文至简体中文的翻译、审校、术语查证与本地化测试。',
+      '游戏本地化译员，负责英文至简体中文的翻译、审校、术语查证与 LQA。',
     ],
     careerSummary: '围绕企业文化、学习发展与游戏本地化的工作经历。',
   },
@@ -44,7 +44,7 @@ export const aboutMeCareer: Record<AboutMeLang, CareerItem[]> = {
       role: 'Freelance Translator',
       company: 'Yeehe',
       description:
-        'Translate game content from English to Chinese and review translations. Research terminology. Maintain termbases and translation memories.\nTest localized content for language and display issues. Track fixes and perform regression testing.',
+        'Translate game content from English to Chinese and review translations. Research terminology. Maintain termbases and translation memories.\nPerform LQA to identify language and in-game display issues. Track fixes and perform regression testing.',
     },
     {
       location: 'Beijing, China',
@@ -70,7 +70,7 @@ export const aboutMeCareer: Record<AboutMeLang, CareerItem[]> = {
       role: '游戏本地化译员',
       company: '译禾',
       description:
-        '负责游戏英译中翻译与审校，开展术语查证，维护术语库与翻译记忆库。\n参与本地化测试，检查语言与游戏内显示问题，跟进修改并进行回归验证。',
+        '负责游戏英译中翻译与审校，开展术语查证，维护术语库与翻译记忆库。\n参与 LQA，检查语言与游戏内显示问题，跟进修改并进行回归验证。',
     },
     {
       location: '中国 · 北京',
