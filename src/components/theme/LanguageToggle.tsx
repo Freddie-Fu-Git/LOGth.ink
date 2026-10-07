@@ -27,7 +27,7 @@ export default function LanguageToggle() {
     <div className="relative inline-flex">
       <button
         onClick={toggleLanguage}
-        className="inline-flex items-center hover:scale-105 size-5 origin-center"
+        className="inline-flex items-center cursor-pointer hover:scale-105 size-5 origin-center"
         aria-label="Toggle Language"
       >
         <span className="icon-[material-symbols--translate-rounded] size-5"></span>
