@@ -18,12 +18,13 @@ const t = useTranslations(lang)
 const translatePath = useTranslatedPath(lang)
 
 const pageSuffix = page.currentPage > 1 ? (lang === 'en' ? ` — Page ${page.currentPage}` : ` — 第 ${page.currentPage} 页`) : ''
-const title = t('posts.title') + pageSuffix
+const title = t('posts.title')
+const seoTitle = title + pageSuffix
 const description = t('posts.description') + pageSuffix
 const introduce = t('posts.introduce')
 ---
 
-<Layout {title} {description}>
+<Layout title={seoTitle} {description}>
   <div class="relative z-[1] py-8 pb-10 px-6 sm:px-8">
     <PageTitle {title} {introduce} />
     <div class="mt-12 fade-up">
