@@ -19,7 +19,7 @@ const career = aboutMeCareer[lang]
 const title = t('nav.aboutme')
 const description = `${profile.name} · ${profile.title}`
 const proseStyle =
-  lang === 'en' ? 'text-align: left; hyphens: auto; overflow-wrap: break-word;' : 'text-align: justify; text-justify: inter-ideograph;'
+  lang === 'en' ? 'text-align: left; hyphens: none; overflow-wrap: break-word;' : 'text-align: justify; text-justify: inter-ideograph;'
 ---
 
 <Layout {title} {description}>

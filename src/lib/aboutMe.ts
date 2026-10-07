@@ -20,19 +20,19 @@ export const aboutMeProfile: Record<AboutMeLang, AboutMeProfile> = {
     name: 'FreddieFu',
     title: 'HR (OC & LD) | Freelance Translator',
     bioLines: [
-      'HR professional with 5 years of experience specializing in OC and L&D, with a proven track record in event planning and cross-cultural training for overseas business expansion.',
-      'Freelance Localization Translator specializing in Gaming & Blockchain. Leveraging AI & CAT tools to deliver culturally resonant, technically precise translations, backed by 100k+ words of experience.',
+      'Around five years of experience in organizational culture and learning and development, covering cultural events, employee recognition, and language and cross-cultural training for overseas business teams.',
+      'Freelance translator working on game localization from English to Chinese. Responsibilities include translation, review, terminology research, and localization testing.',
     ],
-    careerSummary: '5-Year HR Specialist (OC & L&D) | 100k+ Words Localization Translator',
+    careerSummary: 'Organizational culture, learning and development, and game localization.',
   },
   'zh-cn': {
     name: 'FreddieFu',
     title: 'HR (企业文化&学习与发展) | 游戏本地化译员',
     bioLines: [
-      '5年HR，深耕企业文化（OC）与人才发展（L&D），在活动策划及出海业务跨文化培训方面拥有丰富实战经验。',
-      '游戏与区块链本地化译员。精通 AI 与 CAT 辅助工具，10万余字翻译经验，确保译文在文化与技术准确性上的双重高标准。',
+      '约五年企业文化与学习发展工作经历，涉及文化活动、员工评优，以及出海团队的语言与跨文化培训。',
+      '游戏本地化译员，负责英文至简体中文的翻译、审校、术语查证与本地化测试。',
     ],
-    careerSummary: '5年HR (企业文化&学习与发展) | 10万字游戏本地化翻译经验',
+    careerSummary: '围绕企业文化、学习发展与游戏本地化的工作经历。',
   },
 }
 
@@ -44,23 +44,23 @@ export const aboutMeCareer: Record<AboutMeLang, CareerItem[]> = {
       role: 'Freelance Translator',
       company: 'Yeehe',
       description:
-        'Managed 100k+ words of localization for several games, ensuring high-quality cross-cultural adaptation.\nUtilized MemoQ for terminology management and proofreading of UI/video assets to guarantee content consistency.',
+        'Translate game content from English to Chinese and review translations. Research terminology. Maintain termbases and translation memories.\nTest localized content for language and display issues. Track fixes and perform regression testing.',
     },
     {
       location: 'Beijing, China',
       date: 'Dec. 2023 — Mar. 2026',
-      role: 'HR (OC and L&D)',
+      role: 'HR (Culture & Training)',
       company: 'BR Group',
       description:
-        "Led overseas language training projects, managing vendor communication and course delivery via English.\nDeveloped cross-cultural training programs leveraging Hofstede's, Lewis, and Cultural Iceberg models, with customized designs for diverse global markets.",
+        'Managed language and cross-cultural training for overseas business teams and contributed to training programs for graduate hires and managers.\nOrganized annual employee awards and cultural events and led improvements to employee incentive practices.',
     },
     {
       location: 'Beijing, China',
       date: 'Jul. 2020 — Apr. 2023',
-      role: 'HR (OC)',
+      role: 'HR (Organizational Culture)',
       company: 'Ziroom',
       description:
-        'Spearheaded large-scale cultural events (1,000+ attendees) from planning to execution, enhancing team cohesion through cross-functional coordination.\nDrove a 13% increase in evaluation participation and strengthened core value adherence by building a data-driven, value-oriented training framework.',
+        'Led cultural events and employee recognition programs and coordinated monthly assessments of employee alignment with company values.\nAnalyzed employee turnover, helped build an employee retention dashboard, and worked with local HR teams to implement retention initiatives across cities.',
     },
   ],
   'zh-cn': [
@@ -70,23 +70,23 @@ export const aboutMeCareer: Record<AboutMeLang, CareerItem[]> = {
       role: '游戏本地化译员',
       company: '译禾',
       description:
-        '主导知名游戏本地化翻译，累计处理10万余字，确保跨文化表达的准确性与专业度。\n运用 MemoQ 等 CAT 工具管理术语库，负责内容、UI文本及视频脚本的审校，提升内容一致性。',
+        '负责游戏英译中翻译与审校，开展术语查证，维护术语库与翻译记忆库。\n参与本地化测试，检查语言与游戏内显示问题，跟进修改并进行回归验证。',
     },
     {
       location: '中国 · 北京',
       date: '2023.12 — 2026.03',
-      role: 'HR (培训文化)',
+      role: 'HR（文化与培训）',
       company: '百融云创',
       description:
-        '独立负责出海业务语言类培训项目，通过英文邮件及线上会议与海外培训供应商沟通，完成课程资源的筛选与交付。\n基于霍夫斯泰德、刘易斯及文化冰山模型，开发跨文化培训课件，并针对不同全球市场实施差异化课程设计。',
+        '负责出海团队的语言与跨文化培训，参与校招生及管理者培养项目。\n组织年度评优与文化活动，主导员工激励机制的优化。',
     },
     {
       location: '中国 · 北京',
       date: '2020.07 — 2023.04',
-      role: 'HR (企业文化)',
+      role: 'HR（企业文化）',
       company: '自如',
       description:
-        '统筹千人规模的大型文化活动全周期管理，通过跨部门高效协同，有效提升团队凝聚力。\n通过构建数据驱动的价值观评估体系，推动评估参与率提升13%，强化员工对价值观的践行。',
+        '主导文化活动与员工评优，组织月度价值观测评。\n开展离职数据分析，协作搭建人才保留看板，联动城市 HR 推进人才保留项目。',
     },
   ],
 }
